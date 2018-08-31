@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="reset.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab:700" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>idea<span class="box-title">box</span></h1>
+    <form>
+      <input class="title-input" type=text aria-label="Title Input" placeholder="Title">
+      <input class="body-input" type=text aria-label="Body Input" placeholder="Body">
+      <input class="save-button" type="button" aria-label="Save Button" value="save">
+    </form>
+  </header>
+  <main>
+    <div class="ideas-container">
+      <input class="search-input" type="text" aria-label="Search Input" placeholder="Search">
+      <article id="idea-one">
+        <div class="idea-header-container">
+          <h2 class="idea-title">Example Idea 1</h2>
+          <i class="fas fa-times-circle x-icon"></i>
+        </div>
+        <p class="idea-body">Lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem</p>
+        <div class="idea-rating-container">
+          <i class="fas fa-arrow-circle-up up-arrow-icon"></i>
+          <i class="fas fa-arrow-circle-down down-arrow-icon"></i>
+          <h3 class="quality">quality: </h3>
+          <h3 class="quality-value">swill</h3>
+        </div>
+      </article>
+    </div>
+  </main>
+</body>
+<script src="script.js"></script>
+</html>
