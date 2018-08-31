@@ -1,3 +1,9 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+
+/* Header styling */
 header {
   background-color: #E5F3F2;
   padding-top: 30px;
@@ -25,7 +31,7 @@ h1 {
 input {
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
-  margin: 6px;
+  margin: 6px 0;
 }
 
 input[type="text"] {
@@ -43,4 +49,34 @@ input[type="text"] {
 
 ::placeholder {
   color: #cac8c8;
+}
+
+/* Main styling */
+
+.search-input {
+  width: 100%;
+}
+
+.search-container {
+  width: 50%;
+  margin: 20px auto;
+}
+
+article {
+  margin: 0 auto;
+  width: 50%;
+}
+
+h2 {
+ font-family: 'Roboto Slab', serif;
+}
+
+.idea-header-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.idea-rating-container {
+  display: flex;
+  justify-content: flex-start;
 }
