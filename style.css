@@ -12,8 +12,9 @@ header {
 form {
   display: flex;
   flex-direction: column;
-  width: 50%;
   margin: 0 auto;
+  max-width: 500px;
+  width: 50%;
 }
 
 h1 {
@@ -47,6 +48,10 @@ input[type="text"] {
   margin-bottom: 24px;
 }
 
+.save-button:hover {
+  background-color: #045E55;
+}
+
 ::placeholder {
   color: #cac8c8;
 }
@@ -60,24 +65,66 @@ input[type="text"] {
 .search-container {
   width: 50%;
   margin: 20px auto;
+  max-width: 500px;
   display: flex;
 }
 
 article {
   margin: 0 auto;
+  max-width: 500px;
   width: 50%;
 }
 
 h2 {
+ color: #6D6E71;
  font-family: 'Roboto Slab', serif;
 }
 
 .idea-header-container {
   display: flex;
   justify-content: space-between;
+  margin: 15px 0;
 }
 
 .idea-rating-container {
   display: flex;
   justify-content: flex-start;
 }
+
+p {
+  color: #939598;
+  margin: 18px 0;
+}
+
+.idea-title {
+  font-size: 25px;
+}
+
+i {
+  color: #D1D3D4;
+  font-size: 25px;
+}
+
+.x-icon:hover {
+  color: rgb(221, 79, 65);
+}
+
+.up-arrow-icon:hover {
+  color: rgb(96, 178, 88);
+}
+
+.down-arrow-icon:hover {
+  color: rgb(242, 178, 87);
+}
+
+.idea-rating-container i {
+  margin-right: 20px;
+}
+
+h3 {
+  color: #6D6E71;
+  margin-right: 4px;
+  padding-top: 3px;
+}
+
+
