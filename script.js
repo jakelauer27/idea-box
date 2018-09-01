@@ -44,13 +44,10 @@ function addIdea() {
 function IdeaBox(title, body) {
 	this.title = title;
 	this.body = body;
-	this.timestamp = Date.now();
-}
-
-//// CREATE HTML METHOD
-
-IdeaBox.prototype.createHtml = function() {
-  var newIdea = `<article class="new-idea" id="${this.timestamp}">
+  this.timestamp = Date.now();
+  this.quality = ['swill', 'plausible', 'genius']
+  this.qualityIndex = 0;
+  this.html = `<article class="new-idea" id="${this.timestamp}">
   <div class="idea-header-container">
     <h2 class="idea-title">${this.title}</h2>
     <i class="fas fa-times-circle x-icon"></i>
@@ -60,11 +57,16 @@ IdeaBox.prototype.createHtml = function() {
     <i class="fas fa-arrow-circle-up up-arrow-icon"></i>
     <i class="fas fa-arrow-circle-down down-arrow-icon"></i>
     <h3 class="quality">quality: </h3>
-    <h3 class="quality-value">swill</h3>
+    <h3 class="quality-value">${this.quality[this.qualityIndex]}</h3>
   </div>
 </article>`
-	$(newIdea).insertAfter('.ideas-container');
-  localStorage.setItem(this.timestamp, newIdea);
+}
+
+//// CREATE HTML METHOD
+
+IdeaBox.prototype.createHtml = function() {
+	$(this.html).insertAfter('.ideas-container');
+  localStorage.setItem(this.timestamp, this.html);
 };
 
 ////getting items on page load;
