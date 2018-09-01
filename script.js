@@ -1,7 +1,10 @@
 ///EVENT LISTENERS
 
 $('.save-button').on("click", addIdea)
+$('.body-input').on("keypress", disableSaveButton)
+$('.title-input').on("keypress", disableSaveButton)
 $('main').on("click", ideaButtonDelagator)
+
 
 
 ////EVENT DELAGATION & FUNCTIONS
@@ -22,7 +25,7 @@ function deleteIdea(e) {
     var parent = $(e.target).parents('.new-idea')
     parent.remove();
     localStorage.removeItem($(e.target).parents('.new-idea').attr('id'))
-}
+};
 
 function upVote(e) {
    
@@ -32,11 +35,22 @@ function downVote(e) {
     console.log('down');
 }
 
+function disableSaveButton() {
+	if ($('.title-input').val() === '' || $('.body-input').val() === '') {
+		$('.save-button').prop('disabled', true);
+	} else {
+		$('.save-button').prop('disabled', false);
+	}
+};
+
 ////ADD NEW IDEA FUNCTION
 
 function addIdea() {
 	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val());
 	idea.createHtml();
+	$('.title-input').val('');
+	$('.body-input').val('');
+	disableSaveButton();
 }
 
 /// IDEABOX CONSTRUCTOR
