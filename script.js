@@ -37,7 +37,7 @@ function changeQuality(e, idea, change) {
 
 function addIdea() {
 	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val());
-	idea.createHtml();
+	createHtml(idea);
 }
 
 /// IDEABOX CONSTRUCTOR
@@ -48,31 +48,26 @@ function IdeaBox(title, body) {
   this.timestamp = Date.now();
   this.quality = ['swill', 'plausible', 'genius']
   this.qualityIndex = 0;
-  this.html = `<article class="new-idea" id="${this.timestamp}">
+}
+
+//// CREATE HTML
+
+function createHtml(idea) {
+  var item =  `<article class="new-idea" id="${idea.timestamp}">
   <div class="idea-header-container">
-    <h2 class="idea-title">${this.title}</h2>
+    <h2 class="idea-title">${idea.title}</h2>
     <i class="fas fa-times-circle x-icon"></i>
   </div>
-  <p class="idea-body">${this.body}</p>
+  <p class="idea-body">${idea.body}</p>
   <div class="idea-rating-container">
     <i class="fas fa-arrow-circle-up up-arrow-icon"></i>
     <i class="fas fa-arrow-circle-down down-arrow-icon"></i>
     <h3 class="quality">quality: </h3>
-    <h3 class="quality-value">${this.quality[this.qualityIndex]}</h3>
+    <h3 class="quality-value">${idea.quality[idea.qualityIndex]}</h3>
   </div>
 </article>`
-}
-
-IdeaBox.prototype.changeQuality = function(e) {
-
-}
-
-//// CREATE HTML METHOD
-
-IdeaBox.prototype.createHtml = function() {
-  $(this.html).insertAfter('.ideas-container');
-  console.log(this);
-  localStorage.setItem(this.timestamp, JSON.stringify(this));
+  $(item).insertAfter('.ideas-container');
+  localStorage.setItem(idea.timestamp, JSON.stringify(idea));
 };
 
 ////getting items on page load;
@@ -80,5 +75,5 @@ IdeaBox.prototype.createHtml = function() {
 for (i = 0; i < localStorage.length; i++) {
   var key = localStorage.key(i);
   var idea = JSON.parse(localStorage.getItem(key))
-  $(idea.html).insertAfter('.ideas-container');
+  createHtml(idea);
 }
