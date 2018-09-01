@@ -4,17 +4,31 @@ $('.save-button').on("click", addIdea)
 $('.body-input').on("keypress", disableSaveButton)
 $('.title-input').on("keypress", disableSaveButton)
 $('main').on("click", ideaButtonDelagator)
+$('main').on("focusout", updateIdea)
+
+
+function updateIdea(e) {
+  	var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')));
+	if ($(e.target).hasClass('idea-title')) {
+  		idea.title = $(e.target).text(); 
+	}
+	if ($(e.target).hasClass('idea-body')) {
+		idea.body = $(e.target).text();
+	} 
+	localStorage.setItem(idea.timestamp, JSON.stringify(idea));
+}
 
 ////EVENT DELAGATION & FUNCTIONS
 
 function ideaButtonDelagator(e) {
-  if (e.target.classList.contains('x-icon')) {
+  var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')))
+  if ($(e.target).hasClass('x-icon')) {
     deleteIdea(e);
   } 
-  if (e.target.classList.contains('up-arrow-icon')) {
+  if ($(e.target).hasClass('up-arrow-icon')) {
     changeQuality(e, 1);
   }
-  if (e.target.classList.contains('down-arrow-icon')) {
+  if ($(e.target).hasClass('down-arrow-icon')) {
     changeQuality(e, -1);
   }
 }
@@ -69,12 +83,12 @@ function IdeaBox (title, body) {
 function createHtml(idea) {
   var item =  `<article class="new-idea" id="${idea.timestamp}">
   <div class="idea-header-container">
-    <h2 class="idea-title">${idea.title}</h2>
+    <h2 class="edit-idea idea-title" contenteditable="true">${idea.title}</h2>
     <img class="x-icon" src="images/delete.svg" alt="Delete Button"
        onmouseover='hoverDelete(this)'
        onmouseout='unHoverDelete(this)'>
   </div>
-  <p class="idea-body">${idea.body}</p>
+  <p class="edit-idea idea-body" contenteditable="true">${idea.body}</p>
   <div class="idea-rating-container">
     <img class="arrow up-arrow-icon" src="images/upvote.svg" alt="Upvote Button"
       onmouseover='hoverUpArrow(this)'
