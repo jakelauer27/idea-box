@@ -70,16 +70,16 @@ function createHtml(idea) {
   var item =  `<article class="new-idea" id="${idea.timestamp}">
   <div class="idea-header-container">
     <h2 class="idea-title">${idea.title}</h2>
-    <img class="x-icon" src="images/delete.svg" 
+    <img class="x-icon" src="images/delete.svg" alt="Delete Button"
        onmouseover='hoverDelete(this)'
        onmouseout='unHoverDelete(this)'>
   </div>
   <p class="idea-body">${idea.body}</p>
   <div class="idea-rating-container">
-    <img class="arrow up-arrow-icon" src="images/upvote.svg" 
+    <img class="arrow up-arrow-icon" src="images/upvote.svg" alt="Upvote Button"
       onmouseover='hoverUpArrow(this)'
       onmouseout='unHoverUpArrow(this)'>
-    <img class="arrow down-arrow-icon" src="images/downvote.svg" 
+    <img class="arrow down-arrow-icon" src="images/downvote.svg" alt="Downvote Button"
       onmouseover='hoverDownArrow(this)'
       onmouseout='unHoverDownArrow(this)'>
     <h3 class="quality">quality: </h3>
