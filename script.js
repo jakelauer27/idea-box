@@ -1,8 +1,24 @@
+///EVENT LISTENERS
+
+$('.save-button').on("click", addIdea)
+
+
+////ADD NEW IDEA FUNCTION
+
+function addIdea() {
+	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val());
+	idea.createHtml();
+}
+
+/// IDEABOX CONSTRUCTOR
+
 function IdeaBox(title, body) {
 	this.title = title;
 	this.body = body;
 	this.timestamp = Date.now();
 }
+
+//// CREATE HTML METHOD
 
 IdeaBox.prototype.createHtml = function() {
 	$(`<article id="${this.timestamp}">
@@ -20,9 +36,3 @@ IdeaBox.prototype.createHtml = function() {
       </article>`).insertAfter('.ideas-container')
 };
 
-function addIdea() {
-	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val());
-	idea.createHtml();
-}
-
-$('.save-button').on("click", addIdea)
