@@ -1,6 +1,39 @@
 ///EVENT LISTENERS
 
 $('.save-button').on("click", addIdea)
+$('main').on("click", ideaButtonDelagator)
+
+
+////EVENT DELAGATION & FUNCTIONS
+
+function ideaButtonDelagator(e) {
+  if (e.target.classList.contains('x-icon')) {
+    deleteIdea(e);
+  } 
+  if (e.target.classList.contains('up-arrow-icon')) {
+    upVote(e);
+  }
+  if (e.target.classList.contains('down-arrow-icon')) {
+    downVote(e);
+  }
+}
+
+function deleteIdea(e) {
+    $(e.target).parents('.new-idea').remove();
+}
+
+function upVote(e) {
+    console.log('up');
+}
+
+function downVote(e) {
+    console.log('down');
+}
+
+
+
+
+
 
 
 ////ADD NEW IDEA FUNCTION
@@ -21,7 +54,7 @@ function IdeaBox(title, body) {
 //// CREATE HTML METHOD
 
 IdeaBox.prototype.createHtml = function() {
-	$(`<article id="${this.timestamp}">
+	$(`<article class="new-idea" id="${this.timestamp}">
         <div class="idea-header-container">
           <h2 class="idea-title">${this.title}</h2>
           <i class="fas fa-times-circle x-icon"></i>
