@@ -91,6 +91,7 @@ h2 {
   display: flex;
   justify-content: flex-start;
   margin-bottom: 25px;
+  position: relative;
 }
 
 p {
@@ -102,21 +103,13 @@ p {
   font-size: 25px;
 }
 
-i {
-  color: #D1D3D4;
-  font-size: 25px;
+img {
+  width: 32px;
+  height: 32px;
 }
 
-.x-icon:hover {
-  color: rgb(221, 79, 65);
-}
-
-.up-arrow-icon:hover {
-  color: rgb(96, 178, 88);
-}
-
-.down-arrow-icon:hover {
-  color: rgb(242, 178, 87);
+.arrow {
+  margin-right: 14px;
 }
 
 .idea-rating-container i {
@@ -126,7 +119,6 @@ i {
 h3 {
   color: #6D6E71;
   margin-right: 4px;
-  padding-top: 3px;
+  padding-top: 6px;
 }
-
 

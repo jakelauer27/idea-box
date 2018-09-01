@@ -70,12 +70,18 @@ function createHtml(idea) {
   var item =  `<article class="new-idea" id="${idea.timestamp}">
   <div class="idea-header-container">
     <h2 class="idea-title">${idea.title}</h2>
-    <i class="fas fa-times-circle x-icon"></i>
+    <img class="x-icon" src="images/delete.svg" 
+       onmouseover='hoverDelete(this)'
+       onmouseout='unHoverDelete(this)'>
   </div>
   <p class="idea-body">${idea.body}</p>
   <div class="idea-rating-container">
-    <i class="fas fa-arrow-circle-up up-arrow-icon"></i>
-    <i class="fas fa-arrow-circle-down down-arrow-icon"></i>
+    <img class="arrow up-arrow-icon" src="images/upvote.svg" 
+      onmouseover='hoverUpArrow(this)'
+      onmouseout='unHoverUpArrow(this)'>
+    <img class="arrow down-arrow-icon" src="images/downvote.svg" 
+      onmouseover='hoverDownArrow(this)'
+      onmouseout='unHoverDownArrow(this)'>
     <h3 class="quality">quality: </h3>
     <h3 class="quality-value">${idea.quality[idea.qualityIndex]}</h3>
   </div>
@@ -90,4 +96,31 @@ for (i = 0; i < localStorage.length; i++) {
   var key = localStorage.key(i);
   var idea = JSON.parse(localStorage.getItem(key))
   createHtml(idea);
+}
+
+
+////HOVER FUNCTIONS 
+
+function hoverDelete(x) {
+  x.src = "images/delete-hover.svg"
+}
+
+function unHoverDelete(x) {
+  x.src = "images/delete.svg"
+}
+
+function hoverUpArrow(x) {
+  x.src = "images/upvote-hover.svg"
+}
+
+function unHoverUpArrow(x) {
+  x.src = "images/upvote.svg"
+}
+
+function hoverDownArrow(x) {
+  x.src = "images/downvote-hover.svg"
+}
+
+function unHoverDownArrow(x) {
+  x.src = "images/downvote.svg"
 }
