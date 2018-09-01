@@ -25,7 +25,7 @@ function deleteIdea(e) {
 }
 
 function upVote(e) {
-    console.log('up');
+   
 }
 
 function downVote(e) {
