@@ -19,7 +19,9 @@ function ideaButtonDelagator(e) {
 }
 
 function deleteIdea(e) {
-    $(e.target).parents('.new-idea').remove();
+    var parent = $(e.target).parents('.new-idea')
+    parent.remove();
+    localStorage.removeItem($(e.target).parents('.new-idea').attr('id'))
 }
 
 function upVote(e) {
@@ -29,12 +31,6 @@ function upVote(e) {
 function downVote(e) {
     console.log('down');
 }
-
-
-
-
-
-
 
 ////ADD NEW IDEA FUNCTION
 
@@ -54,18 +50,26 @@ function IdeaBox(title, body) {
 //// CREATE HTML METHOD
 
 IdeaBox.prototype.createHtml = function() {
-	$(`<article class="new-idea" id="${this.timestamp}">
-        <div class="idea-header-container">
-          <h2 class="idea-title">${this.title}</h2>
-          <i class="fas fa-times-circle x-icon"></i>
-        </div>
-        <p class="idea-body">${this.body}</p>
-        <div class="idea-rating-container">
-          <i class="fas fa-arrow-circle-up up-arrow-icon"></i>
-          <i class="fas fa-arrow-circle-down down-arrow-icon"></i>
-          <h3 class="quality">quality: </h3>
-          <h3 class="quality-value">swill</h3>
-        </div>
-      </article>`).insertAfter('.ideas-container')
+  var newIdea = `<article class="new-idea" id="${this.timestamp}">
+  <div class="idea-header-container">
+    <h2 class="idea-title">${this.title}</h2>
+    <i class="fas fa-times-circle x-icon"></i>
+  </div>
+  <p class="idea-body">${this.body}</p>
+  <div class="idea-rating-container">
+    <i class="fas fa-arrow-circle-up up-arrow-icon"></i>
+    <i class="fas fa-arrow-circle-down down-arrow-icon"></i>
+    <h3 class="quality">quality: </h3>
+    <h3 class="quality-value">swill</h3>
+  </div>
+</article>`
+	$(newIdea).insertAfter('.ideas-container');
+  localStorage.setItem(this.timestamp, newIdea);
 };
 
+////getting items on page load;
+
+for (i = 0; i < localStorage.length; i++) {
+  var key = localStorage.key(i);
+  $(localStorage.getItem(key)).insertAfter('.ideas-container');
+}
