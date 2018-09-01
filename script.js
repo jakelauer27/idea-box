@@ -26,26 +26,29 @@ function ideaButtonDelagator(e) {
     deleteIdea(e);
   } 
   if ($(e.target).hasClass('up-arrow-icon')) {
-    changeQuality(e, idea, 1);
+    changeQuality(e, 1);
   }
   if ($(e.target).hasClass('down-arrow-icon')) {
-    changeQuality(e, idea, -1);
+    changeQuality(e, -1);
   }
 }
 
 function deleteIdea(e) {
     var parent = $(e.target).parents('.new-idea')
+    localStorage.removeItem($(e.target).parents('.new-idea').attr('id'));
     parent.remove();
-    localStorage.removeItem($(e.target).parents('.new-idea').attr('id'))
 };
 
-function changeQuality(e, idea, change) {
+function changeQuality(e, change) {
+  var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')))
   idea.qualityIndex += change;
   if (idea.qualityIndex < 0) idea.qualityIndex = 0;
   if (idea.qualityIndex > 2) idea.qualityIndex = 2;
   $(e.target).siblings('.quality-value').text(idea.quality[idea.qualityIndex])
   localStorage.setItem(idea.timestamp, JSON.stringify(idea))
 }
+
+/////DISABLE SAVE FUNCTION
 
 function disableSaveButton() {
 	if ($('.title-input').val() === '' || $('.body-input').val() === '') {
@@ -67,7 +70,7 @@ function addIdea() {
 
 /// IDEABOX CONSTRUCTOR
 
-function IdeaBox(title, body) {
+function IdeaBox (title, body) {
 	this.title = title;
 	this.body = body;
   this.timestamp = Date.now();
