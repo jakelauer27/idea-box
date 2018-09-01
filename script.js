@@ -7,14 +7,15 @@ $('main').on("click", ideaButtonDelagator)
 ////EVENT DELAGATION & FUNCTIONS
 
 function ideaButtonDelagator(e) {
+  var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')))
   if (e.target.classList.contains('x-icon')) {
     deleteIdea(e);
   } 
   if (e.target.classList.contains('up-arrow-icon')) {
-    upVote(e);
+    changeQuality(e, idea, 1);
   }
   if (e.target.classList.contains('down-arrow-icon')) {
-    downVote(e);
+    changeQuality(e, idea, -1);
   }
 }
 
@@ -24,12 +25,12 @@ function deleteIdea(e) {
     localStorage.removeItem($(e.target).parents('.new-idea').attr('id'))
 }
 
-function upVote(e) {
-   
-}
-
-function downVote(e) {
-    console.log('down');
+function changeQuality(e, idea, change) {
+  idea.qualityIndex += change;
+  if (idea.qualityIndex < 0) idea.qualityIndex = 0;
+  if (idea.qualityIndex > 2) idea.qualityIndex = 2;
+  $(e.target).siblings('.quality-value').text(idea.quality[idea.qualityIndex])
+  localStorage.setItem(idea.timestamp, JSON.stringify(idea))
 }
 
 ////ADD NEW IDEA FUNCTION
@@ -62,16 +63,22 @@ function IdeaBox(title, body) {
 </article>`
 }
 
+IdeaBox.prototype.changeQuality = function(e) {
+
+}
+
 //// CREATE HTML METHOD
 
 IdeaBox.prototype.createHtml = function() {
-	$(this.html).insertAfter('.ideas-container');
-  localStorage.setItem(this.timestamp, this.html);
+  $(this.html).insertAfter('.ideas-container');
+  console.log(this);
+  localStorage.setItem(this.timestamp, JSON.stringify(this));
 };
 
 ////getting items on page load;
 
 for (i = 0; i < localStorage.length; i++) {
   var key = localStorage.key(i);
-  $(localStorage.getItem(key)).insertAfter('.ideas-container');
+  var idea = JSON.parse(localStorage.getItem(key))
+  $(idea.html).insertAfter('.ideas-container');
 }
