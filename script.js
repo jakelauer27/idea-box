@@ -5,36 +5,36 @@ $('.body-input').on("keypress", disableSaveButton)
 $('.title-input').on("keypress", disableSaveButton)
 $('main').on("click", ideaButtonDelagator)
 
-
-
 ////EVENT DELAGATION & FUNCTIONS
 
 function ideaButtonDelagator(e) {
-  var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')))
   if (e.target.classList.contains('x-icon')) {
     deleteIdea(e);
   } 
   if (e.target.classList.contains('up-arrow-icon')) {
-    changeQuality(e, idea, 1);
+    changeQuality(e, 1);
   }
   if (e.target.classList.contains('down-arrow-icon')) {
-    changeQuality(e, idea, -1);
+    changeQuality(e, -1);
   }
 }
 
 function deleteIdea(e) {
     var parent = $(e.target).parents('.new-idea')
+    localStorage.removeItem($(e.target).parents('.new-idea').attr('id'));
     parent.remove();
-    localStorage.removeItem($(e.target).parents('.new-idea').attr('id'))
 };
 
-function changeQuality(e, idea, change) {
+function changeQuality(e, change) {
+  var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')))
   idea.qualityIndex += change;
   if (idea.qualityIndex < 0) idea.qualityIndex = 0;
   if (idea.qualityIndex > 2) idea.qualityIndex = 2;
   $(e.target).siblings('.quality-value').text(idea.quality[idea.qualityIndex])
   localStorage.setItem(idea.timestamp, JSON.stringify(idea))
 }
+
+/////DISABLE SAVE FUNCTION
 
 function disableSaveButton() {
 	if ($('.title-input').val() === '' || $('.body-input').val() === '') {
@@ -48,7 +48,6 @@ function disableSaveButton() {
 
 function addIdea() {
 	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val());
-	idea.createHtml();
 	$('.title-input').val('');
 	$('.body-input').val('');
 	disableSaveButton();
@@ -57,7 +56,7 @@ function addIdea() {
 
 /// IDEABOX CONSTRUCTOR
 
-function IdeaBox(title, body) {
+function IdeaBox (title, body) {
 	this.title = title;
 	this.body = body;
   this.timestamp = Date.now();
