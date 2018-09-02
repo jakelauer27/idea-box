@@ -109,7 +109,7 @@ h2 {
 .idea-rating-container {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 25px;
+  margin-bottom: 5px;
   position: relative;
 }
 
@@ -141,3 +141,14 @@ h3 {
   padding-top: 6px;
 }
 
+/*TAGS STYLING*/
+
+.tags-container {
+  display: flex;
+  justify-content: flex-start;
+  margin: 10px 0;
+}
+
+.tag {
+  background-color: lightblue;
+}

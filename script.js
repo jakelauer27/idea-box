@@ -82,7 +82,8 @@ function addIdea() {
   $('.body-input').val('');
   $('.tags-input').val('');
 	disableSaveButton();
-	createHtml(idea);
+  createHtml(idea);
+  createTags(idea);
 }
 
 /// IDEABOX CONSTRUCTOR
@@ -118,16 +119,31 @@ function createHtml(idea) {
     <h3 class="quality-value">${idea.quality[idea.qualityIndex]}</h3>
   </div>
   <div class="tags-container">
-    <h4>tags</h4>
+    <h3 class="tags-title">Tags: </h3>
   </div>
 </article>`
   $(item).insertAfter('.ideas-container');
   for(var i = 0; i < idea.tags.length; i++) {
-    var tag = `<h4 class="tag">${idea.tags[i]}</h4>`
-    $(tag).insertAfter($(`#${idea.timestamp}`).children('.tags-container'))
+    var tag = `<h3 class="tag">${idea.tags[i]}</h3>`
+    $(tag).appendTo($(`#${idea.timestamp}`).children('.tags-container'))
   }
   localStorage.setItem(idea.timestamp, JSON.stringify(idea));
 };
+
+////ADDING/CHECKING GLOBAL TAGS
+
+function createTags(idea) {
+  if (localStorage.getItem("tagList") === null) localStorage.setItem("tagList", "[]")
+
+  var currentTags = JSON.parse(localStorage.getItem("tagList"))
+  for(var i = 0; i < idea.tags.length; i ++) {
+    if (currentTags.indexOf(idea.tags[i]) === -1) {
+      currentTags.push(idea.tags[i]);
+      $(`<h3>${idea.tags[i]}</h3>`).appendTo($('.global-tags-container'));
+      localStorage.setItem("tagList", JSON.stringify(currentTags));
+    }
+  } 
+}
 
 ////getting items on page load;
 
@@ -162,6 +178,3 @@ function hoverDownArrow(x) {
 function unHoverDownArrow(x) {
   x.src = "images/downvote.svg"
 }
-
-
-/////TAGS
