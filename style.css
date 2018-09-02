@@ -110,7 +110,7 @@ h2 {
 .idea-rating-container {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 25px;
+  margin-bottom: 5px;
   position: relative;
 }
 
@@ -145,6 +145,18 @@ h3 {
 
 .quality-value {
   font-family: 'Open Sans', sans-serif;
+}
+
+/*TAGS STYLING*/
+
+.tags-container {
+  display: flex;
+  justify-content: flex-start;
+  margin: 10px 0;
+}
+
+.tag {
+  background-color: lightblue;
 }
 
 @media only screen and (max-width: 700px) {
@@ -195,4 +207,3 @@ h3 {
       line-height: 18px;
     }
 }
-

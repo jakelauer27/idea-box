@@ -3,6 +3,7 @@
 $('.save-button').on("click", addIdea)
 $('.body-input').on("keypress", disableSaveButton)
 $('.title-input').on("keypress", disableSaveButton)
+$('.tags-input').on("keypress", disableSaveButton)
 $('main').on("click", ideaButtonDelegator)
 $('main').on("focusout", updateIdea)
 $(document).on("keypress", updateIdeaOnEnter)
@@ -70,28 +71,30 @@ function changeQuality(e, change) {
 /////DISABLE SAVE FUNCTION
 
 function disableSaveButton() {
-	$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '')
+	$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '' ||  $('.tags-input').val() === '')
 };
-
 
 ////ADD NEW IDEA FUNCTION
 
 function addIdea() {
-	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val());
+	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val(), $('.tags-input').val());
 	$('.title-input').val('');
-	$('.body-input').val('');
+  $('.body-input').val('');
+  $('.tags-input').val('');
 	disableSaveButton();
-	createHtml(idea);
+  createHtml(idea);
+  createTags(idea);
 }
 
 /// IDEABOX CONSTRUCTOR
 
-function IdeaBox (title, body) {
+function IdeaBox (title, body, tags) {
 	this.title = title;
 	this.body = body;
   this.timestamp = Date.now();
   this.quality = ['swill', 'plausible', 'genius']
   this.qualityIndex = 0;
+  this.tags = tags.split(',');
 }
 
 //// CREATE HTML
@@ -115,14 +118,36 @@ function createHtml(idea) {
     <h3 class="quality">quality: </h3>
     <h3 class="quality-value">${idea.quality[idea.qualityIndex]}</h3>
   </div>
+  <div class="tags-container">
+    <h3 class="tags-title">Tags: </h3>
+  </div>
 </article>`
   $(item).insertAfter('.ideas-container');
+  for(var i = 0; i < idea.tags.length; i++) {
+    var tag = `<h3 class="tag">${idea.tags[i]}</h3>`
+    $(tag).appendTo($(`#${idea.timestamp}`).children('.tags-container'))
+  }
   localStorage.setItem(idea.timestamp, JSON.stringify(idea));
 };
 
+////ADDING/CHECKING GLOBAL TAGS
+
+function createTags(idea) {
+  if (localStorage.getItem("tagList") === null) localStorage.setItem("tagList", "[]")
+
+  var currentTags = JSON.parse(localStorage.getItem("tagList"))
+  for(var i = 0; i < idea.tags.length; i ++) {
+    if (currentTags.indexOf(idea.tags[i]) === -1) {
+      currentTags.push(idea.tags[i]);
+      $(`<h3>${idea.tags[i]}</h3>`).appendTo($('.global-tags-container'));
+      localStorage.setItem("tagList", JSON.stringify(currentTags));
+    }
+  } 
+}
+
 ////getting items on page load;
 
-for (i = 0; i < localStorage.length; i++) {
+for ( var i = 0; i < localStorage.length; i++) {
   var key = localStorage.key(i);
   var idea = JSON.parse(localStorage.getItem(key))
   createHtml(idea);
