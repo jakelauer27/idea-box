@@ -14,7 +14,7 @@ form {
   flex-direction: column;
   margin: 0 auto;
   max-width: 500px;
-  width: 50%;
+  width: 60%;
 }
 
 h1 {
@@ -36,7 +36,7 @@ input {
 }
 
 input[type="text"] {
-  border: 1.5px solid #CAC8C8;
+  border: 1.4px solid #CAC8C8;
   padding: 5px;
 }
 
@@ -73,6 +73,7 @@ input[type="text"] {
 
 ::placeholder {
   color: #cac8c8;
+  font-size: 18px;
 }
 
 /* Main styling */
@@ -82,17 +83,17 @@ input[type="text"] {
 }
 
 .search-container {
-  width: 50%;
-  margin: 20px auto;
+  width: 60%;
+  margin: 17px auto;
   max-width: 500px;
   display: flex;
 }
 
 article {
-  border-bottom: 1px solid #D1D3D4;
+  border-bottom: 2px solid #D1D3D4;
   margin: 0 auto;
   max-width: 500px;
-  width: 50%;
+  width: 60%;
 }
 
 h2 {
@@ -137,8 +138,13 @@ img {
 
 h3 {
   color: #6D6E71;
+  font-family: 'Roboto Slab', serif;
   margin-right: 4px;
   padding-top: 6px;
+}
+
+.quality-value {
+  font-family: 'Open Sans', sans-serif;
 }
 
 /*TAGS STYLING*/
@@ -151,4 +157,53 @@ h3 {
 
 .tag {
   background-color: lightblue;
+}
+
+@media only screen and (max-width: 700px) {
+    header {
+      padding-top: 10px;
+    }
+    form {
+      width: 87%;
+    }
+    article {
+      width: 87%;
+    }
+    h1 {
+      font-size: 26px ;
+      margin-bottom: 10px;
+    }
+    .body-input {
+      height: 60px;
+    }
+    .body-input::placeholder {
+      bottom: 23px;
+      position: relative;
+    }
+    .search-container {
+      width: 87%;
+    }
+    img {
+      height: 22px;
+      width: 22px;
+    }
+    h3 {
+      font-size: 15px;
+      padding-top: 2px;
+    }
+    .save-button {
+      margin-bottom: 15px;
+    }
+    .idea-title {
+      font-size: 20px;
+    }
+    .search-container {
+      margin: 9px auto 23px auto;
+    }
+    .idea-rating-container {
+      margin-bottom: 14px;
+    }
+    p {
+      line-height: 18px;
+    }
 }
