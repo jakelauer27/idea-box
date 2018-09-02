@@ -57,7 +57,23 @@ function deleteIdea(e) {
     var parent = $(e.target).parents('.new-idea')
     parent.remove();
     localStorage.removeItem($(e.target).parents('.new-idea').attr('id'));
+    deleteTags();
 };
+
+function deleteTags() {
+  var tags = ($('.tag').text()).split(' ');
+  var globalTags = JSON.parse(localStorage.getItem("tagList"));
+  for (var i = 0; i < globalTags.length; i++) {
+    if(tags.indexOf(globalTags[i]) === -1) {
+      $('.global-tag').filter(function() {
+        if($(this).text() === globalTags[i]) $(this).remove();
+      })
+      globalTags.splice(i, 1);
+      i--;
+    }
+  }
+  localStorage.setItem("tagList", JSON.stringify(globalTags));
+}
 
 function changeQuality(e, change) {
   var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')))
@@ -139,7 +155,7 @@ function createTags(idea) {
   for(var i = 0; i < idea.tags.length; i ++) {
     if (currentTags.indexOf(idea.tags[i]) === -1) {
       currentTags.push(idea.tags[i]);
-      $(`<h3>${idea.tags[i]}</h3>`).appendTo($('.global-tags-container'));
+      $(`<h3 class="global-tag">${idea.tags[i]}</h3>`).appendTo($('.global-tags-container'));
       localStorage.setItem("tagList", JSON.stringify(currentTags));
     }
   } 
