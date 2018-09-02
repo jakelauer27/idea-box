@@ -5,20 +5,23 @@ $('.body-input').on("keypress", disableSaveButton)
 $('.title-input').on("keypress", disableSaveButton)
 $('main').on("click", ideaButtonDelegator)
 $('main').on("focusout", updateIdea)
-$(document).on("keypress", function(e) {
-	if(e.which == 13) {
-		$('p, h2').blur();
-		updateIdea(e);
-	} 
-});
+$(document).on("keypress", updateIdeaOnEnter)
 
+
+////UPDATE IDEAS WHEN BODY OR TITLE IS CHANGED
+
+function updateIdeaOnEnter(e) {
+  if(e.which == 13) {
+    $('p, h2').blur();
+		updateIdea(e);
+  }
+}
 
 function updateIdea(e) {
   	var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')));
 	if ($(e.target).hasClass('idea-title')) {
-  		idea.title = $(e.target).text();
+  	idea.title = $(e.target).text();
 		localStorage.setItem(idea.timestamp, JSON.stringify(idea));
-
 	}
 	if ($(e.target).hasClass('idea-body')) {
 		idea.body = $(e.target).text();
@@ -29,7 +32,6 @@ function updateIdea(e) {
 ////EVENT DELAGATION & FUNCTIONS
 
 function ideaButtonDelegator(e) {
-  var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')))
   if ($(e.target).hasClass('x-icon')) {
     deleteIdea(e);
   } 
@@ -43,8 +45,8 @@ function ideaButtonDelegator(e) {
 
 function deleteIdea(e) {
     var parent = $(e.target).parents('.new-idea')
-    localStorage.removeItem($(e.target).parents('.new-idea').attr('id'));
     parent.remove();
+    localStorage.removeItem($(e.target).parents('.new-idea').attr('id'));
 };
 
 function changeQuality(e, change) {
@@ -61,6 +63,7 @@ function changeQuality(e, change) {
 function disableSaveButton() {
 	$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '')
 };
+
 
 ////ADD NEW IDEA FUNCTION
 
