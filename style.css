@@ -48,6 +48,16 @@ input[type="text"] {
   margin-bottom: 24px;
 }
 
+.save-button:disabled {
+  background-color: #00A79D;
+  opacity: .6;
+}
+
+.save-button:disabled:hover {
+  background-color: #00A79D;
+  opacity: .6;
+}
+
 .save-button:hover {
   background-color: #045E55;
 }

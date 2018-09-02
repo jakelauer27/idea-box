@@ -1,22 +1,14 @@
 ///EVENT LISTENERS
 
-$('.save-button').on("click", addIdea);
-$('.body-input').on("keypress", disableSaveButton);
-$('.title-input').on("keypress", disableSaveButton);
-$('main').on("click", ideaButtonDelegator);
-$('main').on("focusout", updateIdea);
+$('.save-button').on("click", addIdea)
+$('.body-input').on("keypress", disableSaveButton)
+$('.title-input').on("keypress", disableSaveButton)
+$('main').on("click", ideaButtonDelegator)
+$('main').on("focusout", updateIdea)
+$(document).on("keypress", updateIdeaOnEnter)
 $('.search-input').on("keyup", search);
 
-///Listening for Enter Keypress to remove focus from editable fields
-
-$(document).keypress(function(e) {
-  if(e.which == 13) {
-    updateIdea(e);
-    $('p, h2').blur();
-  }
-});
-
-///Search Function
+/////SEARCH FUNCTION
 
 function search(e){
   var value = $(e.target).val().toLowerCase();
@@ -25,17 +17,24 @@ function search(e){
   });
 };
 
-///Save new Text/Title Changes
+////UPDATE IDEAS WHEN BODY OR TITLE IS CHANGED
+
+function updateIdeaOnEnter(e) {
+  if(e.which == 13) {
+    $('p, h2').blur();
+		updateIdea(e);
+  }
+}
 
 function updateIdea(e) {
   	var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')));
 	if ($(e.target).hasClass('idea-title')) {
-    idea.title = $(e.target).text(); 
-    localStorage.setItem(idea.timestamp, JSON.stringify(idea));
-    }
+  	idea.title = $(e.target).text();
+		localStorage.setItem(idea.timestamp, JSON.stringify(idea));
+	}
 	if ($(e.target).hasClass('idea-body')) {
 		idea.body = $(e.target).text();
-    localStorage.setItem(idea.timestamp, JSON.stringify(idea));
+		localStorage.setItem(idea.timestamp, JSON.stringify(idea));
 	} 
 }
 
@@ -55,8 +54,8 @@ function ideaButtonDelegator(e) {
 
 function deleteIdea(e) {
     var parent = $(e.target).parents('.new-idea')
-    localStorage.removeItem($(e.target).parents('.new-idea').attr('id'));
     parent.remove();
+    localStorage.removeItem($(e.target).parents('.new-idea').attr('id'));
 };
 
 function changeQuality(e, change) {
@@ -73,6 +72,7 @@ function changeQuality(e, change) {
 function disableSaveButton() {
 	$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '')
 };
+
 
 ////ADD NEW IDEA FUNCTION
 
