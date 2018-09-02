@@ -148,9 +148,16 @@ function createTags(idea) {
 ////getting items on page load;
 
 for ( var i = 0; i < localStorage.length; i++) {
-  var key = localStorage.key(i);
-  var idea = JSON.parse(localStorage.getItem(key))
-  createHtml(idea);
+  if (localStorage.key(i) === "tagList") {
+    var currentTags = JSON.parse(localStorage.getItem("tagList"))
+    for(var i = 0; i < currentTags.length; i ++) {
+      $(`<h3>${currentTags[i]}</h3>`).appendTo($('.global-tags-container'));
+    }
+  } else {
+    var key = localStorage.key(i);
+    var idea = JSON.parse(localStorage.getItem(key))
+    createHtml(idea);
+  }
 }
 
 ////HOVER FUNCTIONS 
