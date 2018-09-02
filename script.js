@@ -7,6 +7,14 @@ $('main').on("click", ideaButtonDelegator)
 $('main').on("focusout", updateIdea)
 $('.search-input').on("keyup", search)
 
+///Listening for Enter Keypress to remove focus from editable fields
+
+$(document).keypress(function(e) {
+  if(e.which == 13) {
+    updateIdea(e);
+    $('p, h2').blur();
+  }
+});
 
 ///Search Function
 
