@@ -1,11 +1,11 @@
 ///EVENT LISTENERS
 
-$('.save-button').on("click", addIdea)
-$('.body-input').on("keypress", disableSaveButton)
-$('.title-input').on("keypress", disableSaveButton)
-$('main').on("click", ideaButtonDelegator)
-$('main').on("focusout", updateIdea)
-$('.search-input').on("keyup", search)
+$('.save-button').on("click", addIdea);
+$('.body-input').on("keypress", disableSaveButton);
+$('.title-input').on("keypress", disableSaveButton);
+$('main').on("click", ideaButtonDelegator);
+$('main').on("focusout", updateIdea);
+$('.search-input').on("keyup", search);
 
 ///Listening for Enter Keypress to remove focus from editable fields
 
