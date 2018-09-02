@@ -6,7 +6,16 @@ $('.title-input').on("keypress", disableSaveButton)
 $('main').on("click", ideaButtonDelegator)
 $('main').on("focusout", updateIdea)
 $(document).on("keypress", updateIdeaOnEnter)
+$('.search-input').on("keyup", search);
 
+/////SEARCH FUNCTION
+
+function search(e){
+  var value = $(e.target).val().toLowerCase();
+  $('.new-idea').filter(function() {
+    $(this).toggle($(this).text().toLowerCase().indexOf(value) !== -1)
+  });
+};
 
 ////UPDATE IDEAS WHEN BODY OR TITLE IS CHANGED
 
