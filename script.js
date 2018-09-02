@@ -77,7 +77,7 @@ function disableSaveButton() {
 ////ADD NEW IDEA FUNCTION
 
 function addIdea() {
-	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val());
+	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val(), $('.tags-input').val());
 	$('.title-input').val('');
 	$('.body-input').val('');
 	disableSaveButton();
@@ -86,12 +86,13 @@ function addIdea() {
 
 /// IDEABOX CONSTRUCTOR
 
-function IdeaBox (title, body) {
+function IdeaBox (title, body, tags) {
 	this.title = title;
 	this.body = body;
   this.timestamp = Date.now();
   this.quality = ['swill', 'plausible', 'genius']
   this.qualityIndex = 0;
+  this.tags = tags.split(',');
 }
 
 //// CREATE HTML
@@ -115,8 +116,15 @@ function createHtml(idea) {
     <h3 class="quality">quality: </h3>
     <h3 class="quality-value">${idea.quality[idea.qualityIndex]}</h3>
   </div>
+  <div class="tags-container">
+  <h4>tags</h4>
+  </div>
 </article>`
   $(item).insertAfter('.ideas-container');
+  // for(i = 0; i < idea.tags.length; i++) {
+  //   var tag = `<h4 class="tag">${idea.tags[i]}</h4>`
+  //   $(tag).insertAfter($(`#${idea.timestamp}`).children('.tags-container'))
+  // }
   localStorage.setItem(idea.timestamp, JSON.stringify(idea));
 };
 
@@ -153,3 +161,6 @@ function hoverDownArrow(x) {
 function unHoverDownArrow(x) {
   x.src = "images/downvote.svg"
 }
+
+
+/////TAGS
