@@ -5,23 +5,35 @@ $('.body-input').on("keypress", disableSaveButton)
 $('.title-input').on("keypress", disableSaveButton)
 $('main').on("click", ideaButtonDelegator)
 $('main').on("focusout", updateIdea)
+$('.search-input').on("keyup", search)
 
+
+///Search Function
+
+function search(e){
+  var value = $(e.target).val().toLowerCase();
+  $('.new-idea').filter(function() {
+    $(this).toggle($(this).text().toLowerCase().indexOf(value) !== -1)
+  });
+};
+
+///Save new Text/Title Changes
 
 function updateIdea(e) {
   	var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')));
 	if ($(e.target).hasClass('idea-title')) {
-  		idea.title = $(e.target).text(); 
-	}
+    idea.title = $(e.target).text(); 
+    localStorage.setItem(idea.timestamp, JSON.stringify(idea));
+    }
 	if ($(e.target).hasClass('idea-body')) {
 		idea.body = $(e.target).text();
+    localStorage.setItem(idea.timestamp, JSON.stringify(idea));
 	} 
-	localStorage.setItem(idea.timestamp, JSON.stringify(idea));
 }
 
 ////EVENT DELAGATION & FUNCTIONS
 
 function ideaButtonDelegator(e) {
-  var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')))
   if ($(e.target).hasClass('x-icon')) {
     deleteIdea(e);
   } 
