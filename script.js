@@ -3,6 +3,7 @@
 $('.save-button').on("click", addIdea)
 $('.body-input').on("keypress", disableSaveButton)
 $('.title-input').on("keypress", disableSaveButton)
+$('.tags-input').on("keypress", disableSaveButton)
 $('main').on("click", ideaButtonDelegator)
 $('main').on("focusout", updateIdea)
 $(document).on("keypress", updateIdeaOnEnter)
@@ -70,16 +71,16 @@ function changeQuality(e, change) {
 /////DISABLE SAVE FUNCTION
 
 function disableSaveButton() {
-	$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '')
+	$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '' ||  $('.tags-input').val() === '')
 };
-
 
 ////ADD NEW IDEA FUNCTION
 
 function addIdea() {
 	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val(), $('.tags-input').val());
 	$('.title-input').val('');
-	$('.body-input').val('');
+  $('.body-input').val('');
+  $('.tags-input').val('');
 	disableSaveButton();
 	createHtml(idea);
 }
@@ -117,20 +118,20 @@ function createHtml(idea) {
     <h3 class="quality-value">${idea.quality[idea.qualityIndex]}</h3>
   </div>
   <div class="tags-container">
-  <h4>tags</h4>
+    <h4>tags</h4>
   </div>
 </article>`
   $(item).insertAfter('.ideas-container');
-  // for(i = 0; i < idea.tags.length; i++) {
-  //   var tag = `<h4 class="tag">${idea.tags[i]}</h4>`
-  //   $(tag).insertAfter($(`#${idea.timestamp}`).children('.tags-container'))
-  // }
+  for(var i = 0; i < idea.tags.length; i++) {
+    var tag = `<h4 class="tag">${idea.tags[i]}</h4>`
+    $(tag).insertAfter($(`#${idea.timestamp}`).children('.tags-container'))
+  }
   localStorage.setItem(idea.timestamp, JSON.stringify(idea));
 };
 
 ////getting items on page load;
 
-for (i = 0; i < localStorage.length; i++) {
+for ( var i = 0; i < localStorage.length; i++) {
   var key = localStorage.key(i);
   var idea = JSON.parse(localStorage.getItem(key))
   createHtml(idea);
