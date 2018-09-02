@@ -52,6 +52,15 @@ input[type="text"] {
   background-color: #045E55;
 }
 
+.save-button:disabled {
+  opacity: .7;
+}
+
+.save-button:disabled:hover {
+  background-color: #00A79D;
+
+}
+
 ::placeholder {
   color: #cac8c8;
 }

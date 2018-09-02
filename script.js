@@ -3,7 +3,7 @@
 $('.save-button').on("click", addIdea)
 $('.body-input').on("keypress", disableSaveButton)
 $('.title-input').on("keypress", disableSaveButton)
-$('main').on("click", ideaButtonDelagator)
+$('main').on("click", ideaButtonDelegator)
 $('main').on("focusout", updateIdea)
 $(document).on("keypress", function(e) {
 	if(e.which == 13) {
@@ -28,7 +28,7 @@ function updateIdea(e) {
 
 ////EVENT DELAGATION & FUNCTIONS
 
-function ideaButtonDelagator(e) {
+function ideaButtonDelegator(e) {
   var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')))
   if ($(e.target).hasClass('x-icon')) {
     deleteIdea(e);
@@ -59,8 +59,7 @@ function changeQuality(e, change) {
 /////DISABLE SAVE FUNCTION
 
 function disableSaveButton() {
-		$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '');
-	
+	$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '')
 };
 
 ////ADD NEW IDEA FUNCTION
@@ -116,7 +115,6 @@ for (i = 0; i < localStorage.length; i++) {
   var idea = JSON.parse(localStorage.getItem(key))
   createHtml(idea);
 }
-
 
 ////HOVER FUNCTIONS 
 
