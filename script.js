@@ -5,7 +5,7 @@ $('.body-input').on("keypress", disableSaveButton);
 $('.title-input').on("keypress", disableSaveButton);
 $('.tags-input').on("keypress", disableSaveButton);
 $('main').on("click", ideaButtonDelegator);
-$('main').on("focusout", updateIdea);
+$('main').on("focusout", updateIdeaContent);
 $(document).on("keypress", updateIdeaOnEnter);
 $('.search-input').on("keyup", search);
 $('.global-tags-container').on("click", searchByTag);
@@ -46,20 +46,8 @@ function sort() {
 function updateIdeaOnEnter(e) {
   if(e.which == 13) {
     $('p, h2').blur();
-		updateIdea(e);
+		updateIdeaContent(e);
   }
-}
-
-function updateIdea(e) {
-  	var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')));
-	if ($(e.target).hasClass('idea-title')) {
-  	idea.title = $(e.target).text();
-		localStorage.setItem(idea.timestamp, JSON.stringify(idea));
-	}
-	if ($(e.target).hasClass('idea-body')) {
-		idea.body = $(e.target).text();
-		localStorage.setItem(idea.timestamp, JSON.stringify(idea));
-	} 
 }
 
 ////MAIN EVENT DELAGATION & VOTING/DELETE FUNCTIONS
@@ -89,7 +77,7 @@ function deleteIdea(e) {
 
 function deleteTags() {
   var tagsOnPage = $('.tag');
-  var globalTags = JSON.parse(localStorage.getItem("atagList"));
+  var globalTags = JSON.parse(localStorage.getItem("taglist"));
   var globalTagsOnPage = $('.global-tag');
   var globalTagsFiltered = [];
   for(var i = 0; i < tagsOnPage.length; i++) {
@@ -100,16 +88,30 @@ function deleteTags() {
   for(var i = 0; i < globalTagsOnPage.length; i++){
     if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text()) === -1) $(globalTagsOnPage[i]).remove();
   }
-  localStorage.setItem("atagList", JSON.stringify(globalTagsFiltered));
+  localStorage.setItem("taglist", JSON.stringify(globalTagsFiltered));
 }
 
 function changeQuality(e, change) {
-  var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')))
-  idea.qualityIndex += change;
-  if (idea.qualityIndex < 0) idea.qualityIndex = 0;
-  if (idea.qualityIndex > 2) idea.qualityIndex = 2;
-  $(e.target).siblings('.quality-value').text(idea.quality[idea.qualityIndex])
-  localStorage.setItem(idea.timestamp, JSON.stringify(idea))
+  var key = $(e.target).parents('.new-idea').attr('id');
+  var selectedIdea = retreiveIdeas(key);
+  selectedIdea.qualityIndex += change;
+  if (selectedIdea.qualityIndex < 0) selectedIdea.qualityIndex = 0;
+  if (selectedIdea.qualityIndex > 2) selectedIdea.qualityIndex = 2;
+  $(e.target).siblings('.quality-value').text(selectedIdea.quality[selectedIdea.qualityIndex])
+  selectedIdea.returnItem();
+}
+
+function updateIdeaContent(e) {
+  var key = $(e.target).parents('.new-idea').attr('id');
+  var selectedIdea = retreiveIdeas(key);
+if ($(e.target).hasClass('idea-title')) {
+  selectedIdea.title = $(e.target).text();
+  selectedIdea.returnItem();
+}
+if ($(e.target).hasClass('idea-body')) {
+  selectedIdea.body = $(e.target).text();
+  selectedIdea.returnItem();
+} 
 }
 
 /////DISABLE SAVE FUNCTION
@@ -188,11 +190,22 @@ window.onload = function() {
   }
 }
 
-function retreiveItem(key) {
+function retreiveIdeas(key) {
   var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
-  storedIdeas.find(function(idea) {
-    return idea.timestamp = key;
-  })
+  for (var i = 0; i < storedIdeas.length; i++) {
+    Object.setPrototypeOf(storedIdeas[i], IdeaBox.prototype);
+  }
+  var selectedIdea = storedIdeas.find(function(element) {
+    return element.timestamp === parseInt(key);
+    });
+  return selectedIdea;
+}
+
+IdeaBox.prototype.returnItem = function() {
+  var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
+  var ideaToReplace = storedIdeas.indexOf(this.timestamp);
+  storedIdeas.splice(ideaToReplace, 1, this);
+  localStorage.setItem('ideas', JSON.stringify(storedIdeas));
 }
 ////ADDING/CHECKING GLOBAL TAGS
 
