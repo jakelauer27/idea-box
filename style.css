@@ -207,46 +207,54 @@ h3 {
     header {
       padding-top: 10px;
     }
-    form {
+
+    form,
+    article,
+    .global-tags-container,
+    .search-container {
       width: 87%;
     }
-    article {
-      width: 87%;
-    }
+
     h1 {
       font-size: 26px ;
       margin-bottom: 10px;
     }
+
     .body-input {
       height: 60px;
     }
+
     .body-input::placeholder {
       bottom: 23px;
       position: relative;
     }
-    .search-container {
-      width: 87%;
-    }
+
     img {
       height: 22px;
       width: 22px;
     }
+
     h3 {
       font-size: 15px;
       padding-top: 2px;
     }
+
     .save-button {
       margin-bottom: 15px;
     }
+
     .idea-title {
       font-size: 20px;
     }
+
     .search-container {
       margin: 9px auto 23px auto;
     }
+
     .idea-rating-container {
       margin-bottom: 14px;
     }
+    
     p {
       line-height: 18px;
     }
