@@ -61,13 +61,19 @@ function deleteIdea(e) {
 };
 
 function deleteTags() {
-  var tags = $('.tag');
+  var tagsOnPage = $('.tag');
   var globalTags = JSON.parse(localStorage.getItem("tagList"));
+  var globalTagsOnPage = $('.global-tag');
   var globalTagsFiltered = [];
-    for(var i = 0; i < tags.length; i++) {
-      if(globalTags.indexOf($(tags[i]).text()) !== -1) globalTagsFiltered.push($(tags[i]).text())
-    }
-  console.log(globalTagsFiltered)
+  for(var i = 0; i < tagsOnPage.length; i++) {
+    if(globalTags.indexOf($(tagsOnPage[i]).text()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text()) === -1) globalTagsFiltered.push($(tagsOnPage[i]).text())
+  }
+  // console.log(globalTagsFiltered)
+  // globalTagsOnPage.filter(function() {
+  //   console.log($(this).text())
+  //   $(this).toggle(globalTagsFiltered.indexOf($(this).text()) === -1)
+  // })
+    // if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text() !== -1)) {
   localStorage.setItem("tagList", JSON.stringify(globalTagsFiltered));
 }
 
@@ -149,7 +155,7 @@ function createTags(idea) {
 
   var currentTags = JSON.parse(localStorage.getItem("tagList"))
   for(var i = 0; i < idea.tags.length; i ++) {
-    if (currentTags.indexOf(idea.tags[i]) === -1) {
+    if (currentTags.indexOf(idea.tags[i].trim()) === -1) {
       currentTags.push(idea.tags[i]);
       $(`<h3 class="global-tag">${idea.tags[i].trim()}</h3>`).appendTo($('.global-tags-container'));
       localStorage.setItem("tagList", JSON.stringify(currentTags));
@@ -163,7 +169,7 @@ for ( var i = 0; i < localStorage.length; i++) {
   if (localStorage.key(i) === "tagList") {
     var currentTags = JSON.parse(localStorage.getItem("tagList"))
     for(var i = 0; i < currentTags.length; i ++) {
-      $(`<h3>${currentTags[i]}</h3>`).appendTo($('.global-tags-container'));
+      $(`<h3 class="global-tag">${currentTags[i]}</h3>`).appendTo($('.global-tags-container'));
     }
   } else {
     var key = localStorage.key(i);
