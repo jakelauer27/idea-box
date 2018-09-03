@@ -155,7 +155,15 @@ h3 {
   margin: 10px 0;
 }
 
-.tag {
+.global-tags-container {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.tag, 
+.global-tag {
   background-color: #E5F3F2;
   border: 1px solid #00A79D;
   border-radius: 10%;

@@ -65,15 +65,17 @@ function deleteTags() {
   var globalTags = JSON.parse(localStorage.getItem("tagList"));
   var globalTagsOnPage = $('.global-tag');
   var globalTagsFiltered = [];
+
   for(var i = 0; i < tagsOnPage.length; i++) {
-    if(globalTags.indexOf($(tagsOnPage[i]).text()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text()) === -1) globalTagsFiltered.push($(tagsOnPage[i]).text())
+    console.log(globalTags);
+    console.log(tagsOnPage);
+    console.log(globalTagsFiltered)
+    if(globalTags.indexOf($(tagsOnPage[i]).text().trim()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text().trim()) === -1) globalTagsFiltered.push($(tagsOnPage[i]).text().trim())
   }
-  // console.log(globalTagsFiltered)
-  // globalTagsOnPage.filter(function() {
-  //   console.log($(this).text())
-  //   $(this).toggle(globalTagsFiltered.indexOf($(this).text()) === -1)
-  // })
-    // if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text() !== -1)) {
+
+  for(var i = 0; i < globalTagsOnPage.length; i++){
+    if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text()) === -1) $(globalTagsOnPage[i]).remove();
+  }
   localStorage.setItem("tagList", JSON.stringify(globalTagsFiltered));
 }
 
@@ -156,7 +158,7 @@ function createTags(idea) {
   var currentTags = JSON.parse(localStorage.getItem("tagList"))
   for(var i = 0; i < idea.tags.length; i ++) {
     if (currentTags.indexOf(idea.tags[i].trim()) === -1) {
-      currentTags.push(idea.tags[i]);
+      currentTags.push(idea.tags[i].trim());
       $(`<h3 class="global-tag">${idea.tags[i].trim()}</h3>`).appendTo($('.global-tags-container'));
       localStorage.setItem("tagList", JSON.stringify(currentTags));
     }
