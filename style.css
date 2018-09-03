@@ -78,17 +78,6 @@ input[type="text"] {
 
 /* Main styling */
 
-.search-input {
-  width: 100%;
-}
-
-.search-container {
-  width: 60%;
-  margin: 17px auto;
-  max-width: 500px;
-  display: flex;
-}
-
 article {
   border-bottom: 2px solid #D1D3D4;
   margin: 0 auto;
@@ -145,6 +134,18 @@ h3 {
 
 .quality-value {
   font-family: 'Open Sans', sans-serif;
+
+}/*SEARCH AND SORT STYLING*/
+
+.search-input {
+  width: 100%;
+}
+
+.search-container {
+  width: 60%;
+  margin: 17px auto;
+  max-width: 500px;
+  display: flex;
 }
 
 /*TAGS STYLING*/

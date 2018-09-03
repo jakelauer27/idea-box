@@ -9,7 +9,7 @@ $('main').on("focusout", updateIdea);
 $(document).on("keypress", updateIdeaOnEnter);
 $('.search-input').on("keyup", search);
 $('.global-tags-container').on("click", searchByTag);
-
+$('.sort-by-quality-button').on("click", sort);
 
 /////SEARCH FUNCTIONS
 
@@ -33,6 +33,14 @@ function searchByTag(e) {
   }
 }
 
+////SORT FUNCTION
+
+function sort() {
+  $('.new-idea').sort(function(a, b) {
+    if (x) {x}
+  })
+}
+
 ////UPDATE IDEAS WHEN BODY OR TITLE IS CHANGED
 
 function updateIdeaOnEnter(e) {
@@ -54,7 +62,7 @@ function updateIdea(e) {
 	} 
 }
 
-////EVENT DELAGATION & FUNCTIONS
+////MAIN EVENT DELAGATION & VOTING/DELETE FUNCTIONS
 
 function ideaButtonDelegator(e) {
   if ($(e.target).hasClass('x-icon')) {
@@ -69,15 +77,19 @@ function ideaButtonDelegator(e) {
 }
 
 function deleteIdea(e) {
-  var parent = $(e.target).parents('.new-idea')
+  var parent = $(e.target).parents('.new-idea');
   parent.remove();
-  localStorage.removeItem($(e.target).parents('.new-idea').attr('id'));
-  deleteTags();
+  var ideaKey = $(e.target).parents('.new-idea').attr('id')
+  var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
+  var updatedIdeas = storedIdeas.filter(function(idea){
+    return idea.timestamp != ideaKey;
+  })
+  localStorage.setItem('ideas', JSON.stringify(updatedIdeas))
 };
 
 function deleteTags() {
   var tagsOnPage = $('.tag');
-  var globalTags = JSON.parse(localStorage.getItem("tagList"));
+  var globalTags = JSON.parse(localStorage.getItem("atagList"));
   var globalTagsOnPage = $('.global-tag');
   var globalTagsFiltered = [];
   for(var i = 0; i < tagsOnPage.length; i++) {
@@ -88,7 +100,7 @@ function deleteTags() {
   for(var i = 0; i < globalTagsOnPage.length; i++){
     if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text()) === -1) $(globalTagsOnPage[i]).remove();
   }
-  localStorage.setItem("tagList", JSON.stringify(globalTagsFiltered));
+  localStorage.setItem("atagList", JSON.stringify(globalTagsFiltered));
 }
 
 function changeQuality(e, change) {
@@ -114,8 +126,8 @@ function addIdea() {
   $('.body-input').val('');
   $('.tags-input').val('');
 	disableSaveButton();
-  createHtml(idea);
-  createTags(idea);
+  idea.AddToPage()
+  idea.sendToStorage();
 }
 
 /// IDEABOX CONSTRUCTOR
@@ -124,22 +136,22 @@ function IdeaBox (title, body, tags) {
 	this.title = title;
 	this.body = body;
   this.timestamp = Date.now();
-  this.quality = ['swill', 'plausible', 'genius']
+  this.quality = ['swill', 'plausible', 'genius'];
   this.qualityIndex = 0;
   this.tags = tags.split(',');
 }
 
 //// CREATE HTML
 
-function createHtml(idea) {
-  var item =  `<article class="new-idea" id="${idea.timestamp}">
+IdeaBox.prototype.AddToPage = function() {
+  var item =  `<article class="new-idea" id="${this.timestamp}">
   <div class="idea-header-container">
-    <h2 class="edit-idea idea-title" contenteditable="true">${idea.title}</h2>
+    <h2 class="edit-idea idea-title" contenteditable="true">${this.title}</h2>
     <img class="x-icon" src="images/delete.svg" alt="Delete Button"
        onmouseover='hoverDelete(this)'
        onmouseout='unHoverDelete(this)'>
   </div>
-  <p class="edit-idea idea-body" contenteditable="true">${idea.body}</p>
+  <p class="edit-idea idea-body" contenteditable="true">${this.body}</p>
   <div class="idea-rating-container">
     <img class="arrow up-arrow-icon" src="images/upvote.svg" alt="Upvote Button"
       onmouseover='hoverUpArrow(this)'
@@ -148,51 +160,43 @@ function createHtml(idea) {
       onmouseover='hoverDownArrow(this)'
       onmouseout='unHoverDownArrow(this)'>
     <h3 class="quality">quality: </h3>
-    <h3 class="quality-value">${idea.quality[idea.qualityIndex]}</h3>
+    <h3 class="quality-value">${this.quality[this.qualityIndex]}</h3>
   </div>
   <div class="tags-container">
     <h3 class="tags-title">Tags: </h3>
   </div>
 </article>`
   $(item).insertAfter('.ideas-container');
-  for(var i = 0; i < idea.tags.length; i++) {
-    var tag = `<h3 class="tag">${idea.tags[i]}</h3>`
-    $(tag).appendTo($(`#${idea.timestamp}`).children('.tags-container'))
+  for(var i = 0; i < this.tags.length; i++) {
+    var tag = `<h3 class="tag">${this.tags[i]}</h3>`
+    $(tag).appendTo($(`#${this.timestamp}`).children('.tags-container'))
   }
-  localStorage.setItem(idea.timestamp, JSON.stringify(idea));
 };
 
-////ADDING/CHECKING GLOBAL TAGS
-
-function createTags(idea) {
-  if (localStorage.getItem("tagList") === null) localStorage.setItem("tagList", "[]")
-
-  var currentTags = JSON.parse(localStorage.getItem("tagList"))
-  for(var i = 0; i < idea.tags.length; i ++) {
-    if (currentTags.indexOf(idea.tags[i].trim()) === -1) {
-      currentTags.push(idea.tags[i].trim());
-      $(`<h3 class="global-tag">${idea.tags[i].trim()}</h3>`).appendTo($('.global-tags-container'));
-      localStorage.setItem("tagList", JSON.stringify(currentTags));
-    }
-  } 
+IdeaBox.prototype.sendToStorage = function(){
+  var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
+  storedIdeas.push(this);
+  localStorage.setItem('ideas', JSON.stringify(storedIdeas));
 }
 
-////getting items on page load;
-
-for ( var i = 0; i < localStorage.length; i++) {
-  if (localStorage.key(i) === "tagList") {
-    var currentTags = JSON.parse(localStorage.getItem("tagList"))
-    for(var i = 0; i < currentTags.length; i ++) {
-      $(`<h3 class="global-tag">${currentTags[i]}</h3>`).appendTo($('.global-tags-container'));
-    }
-  } else {
-    var key = localStorage.key(i);
-    var idea = JSON.parse(localStorage.getItem(key))
-    createHtml(idea);
+window.onload = function() {
+  if (localStorage.key('ideas') === null) localStorage.setItem('ideas', "[]");
+  var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
+  for (var i = 0; i < storedIdeas.length; i++) {
+    Object.setPrototypeOf(storedIdeas[i], IdeaBox.prototype);
+    storedIdeas[i].AddToPage();
   }
 }
 
-////HOVER FUNCTIONS 
+function retreiveItem(key) {
+  var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
+  storedIdeas.find(function(idea) {
+    return idea.timestamp = key;
+  })
+}
+////ADDING/CHECKING GLOBAL TAGS
+
+/////ADDING TO IDEA LIST
 
 function hoverDelete(x) {
   x.src = "images/delete-hover.svg"
