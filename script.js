@@ -1,15 +1,17 @@
 ///EVENT LISTENERS
 
-$('.save-button').on("click", addIdea)
-$('.body-input').on("keypress", disableSaveButton)
-$('.title-input').on("keypress", disableSaveButton)
-$('.tags-input').on("keypress", disableSaveButton)
-$('main').on("click", ideaButtonDelegator)
-$('main').on("focusout", updateIdea)
-$(document).on("keypress", updateIdeaOnEnter)
+$('.save-button').on("click", addIdea);
+$('.body-input').on("keypress", disableSaveButton);
+$('.title-input').on("keypress", disableSaveButton);
+$('.tags-input').on("keypress", disableSaveButton);
+$('main').on("click", ideaButtonDelegator);
+$('main').on("focusout", updateIdea);
+$(document).on("keypress", updateIdeaOnEnter);
 $('.search-input').on("keyup", search);
+$('.global-tags-container').on("click", searchByTag);
 
-/////SEARCH FUNCTION
+
+/////SEARCH FUNCTIONS
 
 function search(e){
   var value = $(e.target).val().toLowerCase();
@@ -17,6 +19,19 @@ function search(e){
     $(this).toggle($(this).text().toLowerCase().indexOf(value) !== -1)
   });
 };
+
+function searchByTag(e) {
+  if ($(e.target).hasClass('global-tag')){
+    $('.new-idea').filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf($(e.target).text()) !== -1)
+    });
+  }
+  if ($(e.target).hasClass('show-all')) {
+    $('.new-idea').filter(function() {
+    $(this).toggle(true) 
+    })
+  }
+}
 
 ////UPDATE IDEAS WHEN BODY OR TITLE IS CHANGED
 
@@ -54,10 +69,10 @@ function ideaButtonDelegator(e) {
 }
 
 function deleteIdea(e) {
-    var parent = $(e.target).parents('.new-idea')
-    parent.remove();
-    localStorage.removeItem($(e.target).parents('.new-idea').attr('id'));
-    deleteTags();
+  var parent = $(e.target).parents('.new-idea')
+  parent.remove();
+  localStorage.removeItem($(e.target).parents('.new-idea').attr('id'));
+  deleteTags();
 };
 
 function deleteTags() {
@@ -65,14 +80,11 @@ function deleteTags() {
   var globalTags = JSON.parse(localStorage.getItem("tagList"));
   var globalTagsOnPage = $('.global-tag');
   var globalTagsFiltered = [];
-
   for(var i = 0; i < tagsOnPage.length; i++) {
-    console.log(globalTags);
-    console.log(tagsOnPage);
-    console.log(globalTagsFiltered)
-    if(globalTags.indexOf($(tagsOnPage[i]).text().trim()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text().trim()) === -1) globalTagsFiltered.push($(tagsOnPage[i]).text().trim())
+    if(globalTags.indexOf($(tagsOnPage[i]).text().trim()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text().trim()) === -1) {
+      globalTagsFiltered.push($(tagsOnPage[i]).text().trim())
+    }
   }
-
   for(var i = 0; i < globalTagsOnPage.length; i++){
     if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text()) === -1) $(globalTagsOnPage[i]).remove();
   }
