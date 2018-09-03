@@ -162,11 +162,27 @@ h3 {
 
 .global-tags-container {
   width: 60%;
-  margin: 10px auto;
+  margin: 10px auto 30px auto;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
   max-width: 500px;
+  position: relative;
+}
+
+.show-all {
+  background: #00A79D;
+  color: white;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  padding: 3px 6px;
+  position: absolute;
+  bottom: -25px; 
+  cursor: pointer;
+}
+
+.show-all:hover {
+  background-color: #045E55;
 }
 
 .tag, 
@@ -178,6 +194,7 @@ h3 {
   font-family: 'Open Sans', sans-serif;
   padding: 5px;
   margin: 3px 3px;
+  cursor: pointer;
 }
 
 .global-tag:hover {
