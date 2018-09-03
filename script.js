@@ -150,17 +150,17 @@ IdeaBox.prototype.AddToPage = function() {
   <div class="idea-header-container">
     <h2 class="edit-idea idea-title" contenteditable="true">${this.title}</h2>
     <img class="x-icon" src="images/delete.svg" alt="Delete Button"
-       onmouseover='hoverDelete(this)'
-       onmouseout='unHoverDelete(this)'>
+       onmouseover='hover(this)'
+       onmouseout='unhover(this)'>
   </div>
   <p class="edit-idea idea-body" contenteditable="true">${this.body}</p>
   <div class="idea-rating-container">
     <img class="arrow up-arrow-icon" src="images/upvote.svg" alt="Upvote Button"
-      onmouseover='hoverUpArrow(this)'
-      onmouseout='unHoverUpArrow(this)'>
+      onmouseover='hover(this)'
+      onmouseout='unhover(this)'>
     <img class="arrow down-arrow-icon" src="images/downvote.svg" alt="Downvote Button"
-      onmouseover='hoverDownArrow(this)'
-      onmouseout='unHoverDownArrow(this)'>
+      onmouseover='hover(this)'
+      onmouseout='unhover(this)'>
     <h3 class="quality">quality: </h3>
     <h3 class="quality-value">${this.quality[this.qualityIndex]}</h3>
   </div>
@@ -211,26 +211,17 @@ IdeaBox.prototype.returnItem = function() {
 
 /////ADDING TO IDEA LIST
 
-function hoverDelete(x) {
-  x.src = "images/delete-hover.svg"
+///HOVER FUNCTIONS 
+
+function hover(x) {
+  console.log(x.src);
+  if (x.src === "file:///Users/jakelauer/Documents/mod-one-projects/idea-box/images/delete.svg") x.src = "images/delete-hover.svg";
+  if (x.src === "file:///Users/jakelauer/Documents/mod-one-projects/idea-box/images/upvote.svg") x.src = "images/upvote-hover.svg";
+  if (x.src === "file:///Users/jakelauer/Documents/mod-one-projects/idea-box/images/downvote.svg") x.src = "images/downvote-hover.svg";
 }
 
-function unHoverDelete(x) {
-  x.src = "images/delete.svg"
-}
-
-function hoverUpArrow(x) {
-  x.src = "images/upvote-hover.svg"
-}
-
-function unHoverUpArrow(x) {
-  x.src = "images/upvote.svg"
-}
-
-function hoverDownArrow(x) {
-  x.src = "images/downvote-hover.svg"
-}
-
-function unHoverDownArrow(x) {
-  x.src = "images/downvote.svg"
+function unhover(x) {
+  if (x.src === "file:///Users/jakelauer/Documents/mod-one-projects/idea-box/images/delete-hover.svg") x.src = "images/delete.svg";
+  if (x.src === "file:///Users/jakelauer/Documents/mod-one-projects/idea-box/images/upvote-hover.svg") x.src = "images/upvote.svg";
+  if (x.src === "file:///Users/jakelauer/Documents/mod-one-projects/idea-box/images/downvote-hover.svg") x.src = "images/downvote.svg";
 }
