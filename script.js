@@ -61,18 +61,14 @@ function deleteIdea(e) {
 };
 
 function deleteTags() {
-  var tags = ($('.tag').text()).split(' ');
+  var tags = $('.tag');
   var globalTags = JSON.parse(localStorage.getItem("tagList"));
-  for (var i = 0; i < globalTags.length; i++) {
-    if(tags.indexOf(globalTags[i]) === -1) {
-      $('.global-tag').filter(function() {
-        if($(this).text() === globalTags[i]) $(this).remove();
-      })
-      globalTags.splice(i, 1);
-      i--;
+  var globalTagsFiltered = [];
+    for(var i = 0; i < tags.length; i++) {
+      if(globalTags.indexOf($(tags[i]).text()) !== -1) globalTagsFiltered.push($(tags[i]).text())
     }
-  }
-  localStorage.setItem("tagList", JSON.stringify(globalTags));
+  console.log(globalTagsFiltered)
+  localStorage.setItem("tagList", JSON.stringify(globalTagsFiltered));
 }
 
 function changeQuality(e, change) {
@@ -155,7 +151,7 @@ function createTags(idea) {
   for(var i = 0; i < idea.tags.length; i ++) {
     if (currentTags.indexOf(idea.tags[i]) === -1) {
       currentTags.push(idea.tags[i]);
-      $(`<h3 class="global-tag">${idea.tags[i]}</h3>`).appendTo($('.global-tags-container'));
+      $(`<h3 class="global-tag">${idea.tags[i].trim()}</h3>`).appendTo($('.global-tags-container'));
       localStorage.setItem("tagList", JSON.stringify(currentTags));
     }
   } 
