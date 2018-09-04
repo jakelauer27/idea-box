@@ -181,9 +181,9 @@ window.onload = function() {
   for ( var i = 0; i < localStorage.length; i++) {
     if (localStorage.key(i) === "tagList") {
       var currentTags = JSON.parse(localStorage.getItem("tagList"))
-      for(var i = 0; i < currentTags.length; i ++) {
-        $(`<h3 class="global-tag">${currentTags[i]}</h3>`).appendTo($('.global-tags-container'));
-      }
+       currentTags.forEach(function(tag) {
+        $(`<h3 class="global-tag">${tag}</h3>`).appendTo($('.global-tags-container'));
+       })
     } else {
       var key = localStorage.key(i);
       var idea = JSON.parse(localStorage.getItem(key))
@@ -191,6 +191,7 @@ window.onload = function() {
     }
   }
 }
+
 
 ////HOVER FUNCTIONS 
 
