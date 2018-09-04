@@ -9,33 +9,8 @@ $('main').on("focusout", updateIdeaContent);
 $(document).on("keypress", updateIdeaOnEnter);
 $('.search-input').on("keyup", search);
 $('.global-tags-container').on("click", searchByTag);
-$('.sort-by-quality-button').on("click", sort);
+// $('.sort-by-quality-button').on("click", sort);
 
-////SORT FUNCTION
-
-function sort() {
-  $('.new-idea').sort(function(a, b) {
-    if (x) {x}
-  })
-}
-
-////GLOBAL TAGS FUNCTIONS
-
-function deleteTags() {
-  var tagsOnPage = $('.tag');
-  var globalTags = JSON.parse(localStorage.getItem("globalTags"));
-  var globalTagsOnPage = $('.global-tag');
-  var globalTagsFiltered = [];
-  for(var i = 0; i < tagsOnPage.length; i++) {
-    if(globalTags.indexOf($(tagsOnPage[i]).text().trim()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text().trim()) === -1) {
-      globalTagsFiltered.push($(tagsOnPage[i]).text().trim())
-    }
-  }
-  for(var i = 0; i < globalTagsOnPage.length; i++){
-    if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text().trim()) === -1) $(globalTagsOnPage[i]).remove();
-  }
-  localStorage.setItem("globalTags", JSON.stringify(globalTagsFiltered));
-}
 ////MAIN EVENT DELAGATION & VOTING/CHANGE/DELETE FUNCTIONS
 
 function ideaButtonDelegator(e) {
@@ -62,12 +37,31 @@ function deleteIdea(e) {
   deleteTags();
 };
 
+function deleteTags() {
+  var tagsOnPage = $('.tag');
+  var globalTags = JSON.parse(localStorage.getItem("globalTags"));
+  var globalTagsOnPage = $('.global-tag');
+  var globalTagsFiltered = [];
+  for(var i = 0; i < tagsOnPage.length; i++) {
+    if(globalTags.indexOf($(tagsOnPage[i]).text().trim()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text().trim()) === -1) {
+      globalTagsFiltered.push($(tagsOnPage[i]).text().trim())
+    }
+  }
+  for(var i = 0; i < globalTagsOnPage.length; i++){
+    if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text().trim()) === -1) $(globalTagsOnPage[i]).remove();
+  }
+  localStorage.setItem("globalTags", JSON.stringify(globalTagsFiltered));
+}
+
 function changeQuality(e, change) {
-  var key = $(e.target).parents('.new-idea').attr('id');
+  var key = $(e.target).parentgit ().parent().attr('id');
   var selectedIdea = retreiveIdeas(key);
+  console.log(key)
+  console.log(e.target)
   selectedIdea.qualityIndex += change;
   if (selectedIdea.qualityIndex < 0) selectedIdea.qualityIndex = 0;
   if (selectedIdea.qualityIndex > 2) selectedIdea.qualityIndex = 2;
+  console.log(selectedIdea.qualityIndex);
   $(e.target).siblings('.quality-value').text(selectedIdea.quality[selectedIdea.qualityIndex])
   selectedIdea.returnItem();
 }
@@ -179,6 +173,21 @@ function retreiveIdeas(key) {
     });
   return selectedIdea;
 }
+
+function sort() {
+  var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
+  console.log(storedIdeas)
+  storedIdeas.sort(function(a, b) {
+    if (a.qualityIndex < b.qualityIndex) 
+      return -1;
+    if (a.qualityIndex > b.qualityIndex) 
+      return 1;
+    return 0;
+  });
+  return storedIdeas;
+}
+
+
 
 /////SEARCH FUNCTIONS
 
