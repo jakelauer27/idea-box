@@ -23,18 +23,15 @@ function sort() {
 
 function deleteTags() {
   var tagsOnPage = $('.tag');
-  var globalTags = JSON.parse(localStorage.getItem("taglist"));
   var globalTagsOnPage = $('.global-tag');
-  var globalTagsFiltered = [];
+  var currentGlobalTags = JSON.parse(localStorage.getItem('globalTags'));
   for(var i = 0; i < tagsOnPage.length; i++) {
-    if(globalTags.indexOf($(tagsOnPage[i]).text().trim()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text().trim()) === -1) {
-      globalTagsFiltered.push($(tagsOnPage[i]).text().trim())
+    if (currentGlobalTags.indexOf($(tagsOnPage[i]).text()) === -1) {
+      currentGlobalTags.splice(globalTagsOnPage[i], 1)
+      globalTagsOnPage[i].remove();
     }
   }
-  for(var i = 0; i < globalTagsOnPage.length; i++){
-    if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text()) === -1) $(globalTagsOnPage[i]).remove();
-  }
-  localStorage.setItem("taglist", JSON.stringify(globalTagsFiltered));
+  localStorage.setItem('globalTags', JSON.stringify(currentGlobalTags))
 }
 
 ////MAIN EVENT DELAGATION & VOTING/CHANGE/DELETE FUNCTIONS
@@ -60,6 +57,7 @@ function deleteIdea(e) {
     return idea.timestamp != ideaKey;
   })
   localStorage.setItem('ideas', JSON.stringify(updatedIdeas))
+  deleteTags();
 };
 
 function changeQuality(e, change) {
