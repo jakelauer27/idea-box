@@ -147,20 +147,20 @@ function createTags(idea) {
 
 function search(e){
   var value = $(e.target).val().toLowerCase();
-  $('.new-idea').filter(function() {
-    $(this).toggle($(this).text().toLowerCase().indexOf(value) !== -1)
+  $('.new-idea').each(function(i, element) {
+    $(element).toggle($(element).text().toLowerCase().indexOf(value) !== -1)
   });
 };
 
 function searchByTag(e) {
   if ($(e.target).hasClass('global-tag')){
-    $('.new-idea').filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf($(e.target).text()) !== -1)
+    $('.new-idea').each(function(i, element) {
+      $(element).toggle($(element).text().toLowerCase().indexOf($(e.target).text()) !== -1)
     });
   }
   if ($(e.target).hasClass('show-all')) {
-    $('.new-idea').filter(function() {
-    $(this).toggle(true) 
+    $('.new-idea').each(function(i, element) {
+    $(element).toggle(element) 
     })
   }
 }
