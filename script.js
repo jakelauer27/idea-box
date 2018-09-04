@@ -10,50 +10,6 @@ $(document).on("keypress", updateIdeaOnEnter);
 $('.search-input').on("keyup", search);
 $('.global-tags-container').on("click", searchByTag);
 
-
-/////SEARCH FUNCTIONS
-
-function search(e){
-  var value = $(e.target).val().toLowerCase();
-  $('.new-idea').filter(function() {
-    $(this).toggle($(this).text().toLowerCase().indexOf(value) !== -1)
-  });
-};
-
-function searchByTag(e) {
-  if ($(e.target).hasClass('global-tag')){
-    $('.new-idea').filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf($(e.target).text()) !== -1)
-    });
-  }
-  if ($(e.target).hasClass('show-all')) {
-    $('.new-idea').filter(function() {
-    $(this).toggle(true) 
-    })
-  }
-}
-
-////UPDATE IDEAS WHEN BODY OR TITLE IS CHANGED
-
-function updateIdeaOnEnter(e) {
-  if(e.which == 13) {
-    $('p, h2').blur();
-		updateIdea(e);
-  }
-}
-
-function updateIdea(e) {
-  	var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')));
-	if ($(e.target).hasClass('idea-title')) {
-  	idea.title = $(e.target).text();
-		localStorage.setItem(idea.timestamp, JSON.stringify(idea));
-	}
-	if ($(e.target).hasClass('idea-body')) {
-		idea.body = $(e.target).text();
-		localStorage.setItem(idea.timestamp, JSON.stringify(idea));
-	} 
-}
-
 ////EVENT DELAGATION & FUNCTIONS
 
 function ideaButtonDelegator(e) {
@@ -98,13 +54,28 @@ function changeQuality(e, change) {
   if (idea.qualityIndex > 2) idea.qualityIndex = 2;
   $(e.target).siblings('.quality-value').text(idea.quality[idea.qualityIndex])
   localStorage.setItem(idea.timestamp, JSON.stringify(idea))
+
+////UPDATE IDEAS WHEN BODY OR TITLE IS CHANGED
+
+function updateIdeaOnEnter(e) {
+  if(e.which == 13) {
+    $('p, h2').blur();
+		updateIdea(e);
+  }
 }
 
-/////DISABLE SAVE FUNCTION
-
-function disableSaveButton() {
-	$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '' ||  $('.tags-input').val() === '')
-};
+function updateIdea(e) {
+  	var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')));
+	if ($(e.target).hasClass('idea-title')) {
+  	idea.title = $(e.target).text();
+		localStorage.setItem(idea.timestamp, JSON.stringify(idea));
+	}
+	if ($(e.target).hasClass('idea-body')) {
+		idea.body = $(e.target).text();
+		localStorage.setItem(idea.timestamp, JSON.stringify(idea));
+	} 
+}
+}
 
 ////ADD NEW IDEA FUNCTION
 
@@ -166,7 +137,6 @@ function createHtml(idea) {
 
 function createTags(idea) {
   if (localStorage.getItem("tagList") === null) localStorage.setItem("tagList", "[]")
-
   var currentTags = JSON.parse(localStorage.getItem("tagList"))
   for(var i = 0; i < idea.tags.length; i ++) {
     if (currentTags.indexOf(idea.tags[i].trim()) === -1) {
@@ -177,18 +147,48 @@ function createTags(idea) {
   } 
 }
 
-////getting items on page load;
+/////SEARCH FUNCTIONS
 
-for ( var i = 0; i < localStorage.length; i++) {
-  if (localStorage.key(i) === "tagList") {
-    var currentTags = JSON.parse(localStorage.getItem("tagList"))
-    for(var i = 0; i < currentTags.length; i ++) {
-      $(`<h3 class="global-tag">${currentTags[i]}</h3>`).appendTo($('.global-tags-container'));
+function search(e){
+  var value = $(e.target).val().toLowerCase();
+  $('.new-idea').filter(function() {
+    $(this).toggle($(this).text().toLowerCase().indexOf(value) !== -1)
+  });
+};
+
+function searchByTag(e) {
+  if ($(e.target).hasClass('global-tag')){
+    $('.new-idea').filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf($(e.target).text()) !== -1)
+    });
+  }
+  if ($(e.target).hasClass('show-all')) {
+    $('.new-idea').filter(function() {
+    $(this).toggle(true) 
+    })
+  }
+}
+
+/////DISABLE SAVE FUNCTION
+
+function disableSaveButton() {
+	$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '' ||  $('.tags-input').val() === '')
+};
+
+////GETTING ITEMS ON PAGE LOAD;
+
+window.onload = function() {
+  for ( var i = 0; i < localStorage.length; i++) {
+    if (localStorage.key(i) === "tagList") {
+      var currentTags = JSON.parse(localStorage.getItem("tagList"))
+      for(var i = 0; i < currentTags.length; i ++) {
+        $(`<h3 class="global-tag">${currentTags[i]}</h3>`).appendTo($('.global-tags-container'));
+      }
+    } else {
+      var key = localStorage.key(i);
+      var idea = JSON.parse(localStorage.getItem(key))
+      createHtml(idea);
     }
-  } else {
-    var key = localStorage.key(i);
-    var idea = JSON.parse(localStorage.getItem(key))
-    createHtml(idea);
   }
 }
 
