@@ -134,13 +134,13 @@ function createHtml(idea) {
 function createTags(idea) {
   if (localStorage.getItem("tagList") === null) localStorage.setItem("tagList", "[]")
   var currentTags = JSON.parse(localStorage.getItem("tagList"))
-  for(var i = 0; i < idea.tags.length; i ++) {
-    if (currentTags.indexOf(idea.tags[i].trim()) === -1) {
-      currentTags.push(idea.tags[i].trim());
-      $(`<h3 class="global-tag">${idea.tags[i].trim()}</h3>`).appendTo($('.global-tags-container'));
+  idea.tags.forEach(function(tag){
+    if (currentTags.indexOf(tag.trim()) === -1) {
+      currentTags.push(tag.trim());
+      $(`<h3 class="global-tag">${tag.trim()}</h3>`).appendTo($('.global-tags-container'));
       localStorage.setItem("tagList", JSON.stringify(currentTags));
     }
-  } 
+  })
 }
 
 /////SEARCH FUNCTIONS
@@ -187,7 +187,6 @@ window.onload = function() {
     }
   }
 }
-
 
 ////HOVER FUNCTIONS 
 
