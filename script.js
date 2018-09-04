@@ -126,10 +126,9 @@ function createHtml(idea) {
   </div>
 </article>`
   $(item).insertAfter('.ideas-container');
-  for(var i = 0; i < idea.tags.length; i++) {
-    var tag = `<h3 class="tag">${idea.tags[i]}</h3>`
-    $(tag).appendTo($(`#${idea.timestamp}`).children('.tags-container'))
-  }
+  idea.tags.forEach(function(tag){
+    $(`<h3 class="tag">${tag}</h3>`).appendTo($(`#${idea.timestamp}`).children('.tags-container'))
+  })
   localStorage.setItem(idea.timestamp, JSON.stringify(idea));
 };
 
