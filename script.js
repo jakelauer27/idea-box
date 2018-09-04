@@ -33,17 +33,14 @@ function deleteIdea(e) {
 
 function deleteTags() {
   var tagsOnPage = $('.tag');
-  var globalTags = JSON.parse(localStorage.getItem("tagList"));
-  var globalTagsOnPage = $('.global-tag');
   var globalTagsFiltered = [];
-  for(var i = 0; i < tagsOnPage.length; i++) {
-    if(globalTags.indexOf($(tagsOnPage[i]).text().trim()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text().trim()) === -1) {
-      globalTagsFiltered.push($(tagsOnPage[i]).text().trim())
-    }
-  }
-  for(var i = 0; i < globalTagsOnPage.length; i++){
-    if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text()) === -1) $(globalTagsOnPage[i]).remove();
-  }
+  var globalTagsOnPage = $('.global-tag');
+  $(tagsOnPage).each(function(i, tag) {
+    if (globalTagsFiltered.indexOf(tag) === -1) globalTagsFiltered.push($(tag).text().trim());
+  })
+  $(globalTagsOnPage).each(function(i, tag){
+    if(globalTagsFiltered.indexOf($(tag).text()) === -1) $(tag).remove();
+  })
   localStorage.setItem("tagList", JSON.stringify(globalTagsFiltered));
 }
 
