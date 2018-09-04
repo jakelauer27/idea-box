@@ -1,9 +1,9 @@
 ///EVENT LISTENERS
 
 $('.save-button').on("click", addIdea);
-$('.body-input').on("keypress", disableSaveButton);
-$('.title-input').on("keypress", disableSaveButton);
-$('.tags-input').on("keypress", disableSaveButton);
+$('.body-input').on("keyup", disableSaveButton);
+$('.title-input').on("keyup", disableSaveButton);
+$('.tags-input').on("keyup", disableSaveButton);
 $('main').on("click", ideaButtonDelegator);
 $('main').on("focusout", updateIdea);
 $(document).on("keypress", updateIdeaOnEnter);
@@ -54,6 +54,7 @@ function changeQuality(e, change) {
   if (idea.qualityIndex > 2) idea.qualityIndex = 2;
   $(e.target).siblings('.quality-value').text(idea.quality[idea.qualityIndex])
   localStorage.setItem(idea.timestamp, JSON.stringify(idea))
+}
 
 ////UPDATE IDEAS WHEN BODY OR TITLE IS CHANGED
 
@@ -74,7 +75,6 @@ function updateIdea(e) {
 		idea.body = $(e.target).text();
 		localStorage.setItem(idea.timestamp, JSON.stringify(idea));
 	} 
-}
 }
 
 ////ADD NEW IDEA FUNCTION
