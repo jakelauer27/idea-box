@@ -54,7 +54,7 @@ function deleteTags() {
 }
 
 function changeQuality(e, change) {
-  var key = $(e.target).parentgit ().parent().attr('id');
+  var key = $(e.target).parent().parent().attr('id');
   var selectedIdea = retreiveIdeas(key);
   console.log(key)
   console.log(e.target)
