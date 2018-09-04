@@ -23,24 +23,26 @@ function sort() {
 
 function deleteTags() {
   var tagsOnPage = $('.tag');
+  var globalTags = JSON.parse(localStorage.getItem("globalTags"));
   var globalTagsOnPage = $('.global-tag');
-  var currentGlobalTags = JSON.parse(localStorage.getItem('globalTags'));
+  var globalTagsFiltered = [];
   for(var i = 0; i < tagsOnPage.length; i++) {
-    if (currentGlobalTags.indexOf($(tagsOnPage[i]).text()) === -1) {
-      currentGlobalTags.splice(globalTagsOnPage[i], 1)
-      globalTagsOnPage[i].remove();
+    if(globalTags.indexOf($(tagsOnPage[i]).text().trim()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text().trim()) === -1) {
+      globalTagsFiltered.push($(tagsOnPage[i]).text().trim())
     }
   }
-  localStorage.setItem('globalTags', JSON.stringify(currentGlobalTags))
+  for(var i = 0; i < globalTagsOnPage.length; i++){
+    if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text().trim()) === -1) $(globalTagsOnPage[i]).remove();
+  }
+  localStorage.setItem("globalTags", JSON.stringify(globalTagsFiltered));
 }
-
 ////MAIN EVENT DELAGATION & VOTING/CHANGE/DELETE FUNCTIONS
 
 function ideaButtonDelegator(e) {
   if ($(e.target).hasClass('x-icon')) {
     deleteIdea(e);
   } 
-  if ($(e.target).hasClass('up-arrow-icon')) {
+  if ($(e.target).hasClass('up-arrow-icon')) { 
     changeQuality(e, 1);
   }
   if ($(e.target).hasClass('down-arrow-icon')) {
