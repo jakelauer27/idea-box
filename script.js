@@ -54,7 +54,7 @@ function deleteTags() {
 }
 
 function changeQuality(e, change) {
-  var key = $(e.target).parent().parent().attr('id');
+  var key = $(e.target).parent().parent().attr("id");
   var selectedIdea = retreiveIdeas(key);
   console.log(key)
   console.log(e.target)
@@ -67,7 +67,7 @@ function changeQuality(e, change) {
 }
 
 function updateIdeaContent(e) {
-  var key = $(e.target).parents('.new-idea').attr('id');
+  var key = $(e.target).parents('.new-idea').attr("id");
   var selectedIdea = retreiveIdeas(key);
 if ($(e.target).hasClass('idea-title')) {
   selectedIdea.title = $(e.target).text();
@@ -139,7 +139,7 @@ IdeaBox.prototype.AddToPage = function() {
 };
 
 IdeaBox.prototype.addGlobalTags = function() {
-  var currentGlobalTags = JSON.parse(localStorage.getItem('globalTags'));
+  var currentGlobalTags = JSON.parse(localStorage.getItem("globalTags"));
   for(var i = 0; i < this.tags.length; i++){
     if(currentGlobalTags.indexOf(this.tags[i].trim()) === -1) {
       currentGlobalTags.push(this.tags[i].trim());
@@ -151,20 +151,20 @@ IdeaBox.prototype.addGlobalTags = function() {
 }
 
 IdeaBox.prototype.sendToStorage = function(){
-  var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
+  var storedIdeas = JSON.parse(localStorage.getItem("ideas"));
   storedIdeas.push(this);
-  localStorage.setItem('ideas', JSON.stringify(storedIdeas));
+  localStorage.setItem("ideas", JSON.stringify(storedIdeas));
 }
 
 IdeaBox.prototype.returnItem = function() {
-  var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
+  var storedIdeas = JSON.parse(localStorage.getItem("ideas"));
   var ideaToReplace = storedIdeas.indexOf(this.timestamp);
   storedIdeas.splice(ideaToReplace, 1, this);
-  localStorage.setItem('ideas', JSON.stringify(storedIdeas));
+  localStorage.setItem("ideas", JSON.stringify(storedIdeas));
 }
 
 function retreiveIdeas(key) {
-  var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
+  var storedIdeas = JSON.parse(localStorage.getItem("ideas"));
   for (var i = 0; i < storedIdeas.length; i++) {
     Object.setPrototypeOf(storedIdeas[i], IdeaBox.prototype);
   }
