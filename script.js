@@ -160,7 +160,7 @@ function searchByTag(e) {
   }
   if ($(e.target).hasClass('show-all')) {
     $('.new-idea').each(function(i, element) {
-    $(element).toggle(element) 
+    $(element).toggle(true); 
     })
   }
 }
@@ -177,6 +177,7 @@ function searchByTag(e) {
 //   if(aRating === "plausible" && bRating === "swill") return -1;
 //   return 0;
 // })
+
 
 /////DISABLE SAVE FUNCTION
 
