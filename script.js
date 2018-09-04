@@ -11,28 +11,6 @@ $('.search-input').on("keyup", search);
 $('.global-tags-container').on("click", searchByTag);
 $('.sort-by-quality-button').on("click", sort);
 
-/////SEARCH FUNCTIONS
-
-function search(e){
-  var value = $(e.target).val().toLowerCase();
-  $('.new-idea').filter(function() {
-    $(this).toggle($(this).text().toLowerCase().indexOf(value) !== -1)
-  });
-};
-
-function searchByTag(e) {
-  if ($(e.target).hasClass('global-tag')){
-    $('.new-idea').filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf($(e.target).text()) !== -1)
-    });
-  }
-  if ($(e.target).hasClass('show-all')) {
-    $('.new-idea').filter(function() {
-    $(this).toggle(true) 
-    })
-  }
-}
-
 ////SORT FUNCTION
 
 function sort() {
@@ -41,16 +19,25 @@ function sort() {
   })
 }
 
-////UPDATE IDEAS WHEN BODY OR TITLE IS CHANGED
+////GLOBAL TAGS FUNCTIONS
 
-function updateIdeaOnEnter(e) {
-  if(e.which == 13) {
-    $('p, h2').blur();
-		updateIdeaContent(e);
+function deleteTags() {
+  var tagsOnPage = $('.tag');
+  var globalTags = JSON.parse(localStorage.getItem("taglist"));
+  var globalTagsOnPage = $('.global-tag');
+  var globalTagsFiltered = [];
+  for(var i = 0; i < tagsOnPage.length; i++) {
+    if(globalTags.indexOf($(tagsOnPage[i]).text().trim()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text().trim()) === -1) {
+      globalTagsFiltered.push($(tagsOnPage[i]).text().trim())
+    }
   }
+  for(var i = 0; i < globalTagsOnPage.length; i++){
+    if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text()) === -1) $(globalTagsOnPage[i]).remove();
+  }
+  localStorage.setItem("taglist", JSON.stringify(globalTagsFiltered));
 }
 
-////MAIN EVENT DELAGATION & VOTING/DELETE FUNCTIONS
+////MAIN EVENT DELAGATION & VOTING/CHANGE/DELETE FUNCTIONS
 
 function ideaButtonDelegator(e) {
   if ($(e.target).hasClass('x-icon')) {
@@ -75,22 +62,6 @@ function deleteIdea(e) {
   localStorage.setItem('ideas', JSON.stringify(updatedIdeas))
 };
 
-function deleteTags() {
-  var tagsOnPage = $('.tag');
-  var globalTags = JSON.parse(localStorage.getItem("taglist"));
-  var globalTagsOnPage = $('.global-tag');
-  var globalTagsFiltered = [];
-  for(var i = 0; i < tagsOnPage.length; i++) {
-    if(globalTags.indexOf($(tagsOnPage[i]).text().trim()) !== -1 && globalTagsFiltered.indexOf($(tagsOnPage[i]).text().trim()) === -1) {
-      globalTagsFiltered.push($(tagsOnPage[i]).text().trim())
-    }
-  }
-  for(var i = 0; i < globalTagsOnPage.length; i++){
-    if(globalTagsFiltered.indexOf($(globalTagsOnPage[i]).text()) === -1) $(globalTagsOnPage[i]).remove();
-  }
-  localStorage.setItem("taglist", JSON.stringify(globalTagsFiltered));
-}
-
 function changeQuality(e, change) {
   var key = $(e.target).parents('.new-idea').attr('id');
   var selectedIdea = retreiveIdeas(key);
@@ -114,25 +85,14 @@ if ($(e.target).hasClass('idea-body')) {
 } 
 }
 
-/////DISABLE SAVE FUNCTION
-
-function disableSaveButton() {
-	$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '' ||  $('.tags-input').val() === '')
-};
-
-////ADD NEW IDEA FUNCTION
-
-function addIdea() {
-	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val(), $('.tags-input').val());
-	$('.title-input').val('');
-  $('.body-input').val('');
-  $('.tags-input').val('');
-	disableSaveButton();
-  idea.AddToPage()
-  idea.sendToStorage();
+function updateIdeaOnEnter(e) {
+  if(e.which == 13) {
+    $('p, h2').blur();
+		updateIdeaContent(e);
+  }
 }
 
-/// IDEABOX CONSTRUCTOR
+/// IDEABOX CONSTRUCTOR + METHODS + CORE RETRIEVE/RETURN FROM STORAGE FUNCTIONS
 
 function IdeaBox (title, body, tags) {
 	this.title = title;
@@ -143,7 +103,16 @@ function IdeaBox (title, body, tags) {
   this.tags = tags.split(',');
 }
 
-//// CREATE HTML
+function addIdea() {
+	var idea = new IdeaBox($('.title-input').val(), $('.body-input').val(), $('.tags-input').val());
+	$('.title-input').val('');
+  $('.body-input').val('');
+  $('.tags-input').val('');
+  disableSaveButton();
+  idea.addGlobalTags();
+  idea.AddToPage();
+  idea.sendToStorage();
+}
 
 IdeaBox.prototype.AddToPage = function() {
   var item =  `<article class="new-idea" id="${this.timestamp}">
@@ -170,10 +139,22 @@ IdeaBox.prototype.AddToPage = function() {
 </article>`
   $(item).insertAfter('.ideas-container');
   for(var i = 0; i < this.tags.length; i++) {
-    var tag = `<h3 class="tag">${this.tags[i]}</h3>`
+    var tag = `<h3 class="tag">${this.tags[i].trim()}</h3>`
     $(tag).appendTo($(`#${this.timestamp}`).children('.tags-container'))
   }
 };
+
+IdeaBox.prototype.addGlobalTags = function() {
+  var currentGlobalTags = JSON.parse(localStorage.getItem('globalTags'));
+  for(var i = 0; i < this.tags.length; i++){
+    if(currentGlobalTags.indexOf(this.tags[i].trim()) === -1) {
+      currentGlobalTags.push(this.tags[i].trim());
+      var globalTag = `<h3 class="global-tag">${this.tags[i]}</h3>`
+      $(globalTag).appendTo($('.global-tags-container'))
+    }
+  localStorage.setItem("globalTags", JSON.stringify(currentGlobalTags));
+  }
+}
 
 IdeaBox.prototype.sendToStorage = function(){
   var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
@@ -181,13 +162,11 @@ IdeaBox.prototype.sendToStorage = function(){
   localStorage.setItem('ideas', JSON.stringify(storedIdeas));
 }
 
-window.onload = function() {
-  if (localStorage.key('ideas') === null) localStorage.setItem('ideas', "[]");
+IdeaBox.prototype.returnItem = function() {
   var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
-  for (var i = 0; i < storedIdeas.length; i++) {
-    Object.setPrototypeOf(storedIdeas[i], IdeaBox.prototype);
-    storedIdeas[i].AddToPage();
-  }
+  var ideaToReplace = storedIdeas.indexOf(this.timestamp);
+  storedIdeas.splice(ideaToReplace, 1, this);
+  localStorage.setItem('ideas', JSON.stringify(storedIdeas));
 }
 
 function retreiveIdeas(key) {
@@ -201,20 +180,55 @@ function retreiveIdeas(key) {
   return selectedIdea;
 }
 
-IdeaBox.prototype.returnItem = function() {
-  var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
-  var ideaToReplace = storedIdeas.indexOf(this.timestamp);
-  storedIdeas.splice(ideaToReplace, 1, this);
-  localStorage.setItem('ideas', JSON.stringify(storedIdeas));
-}
-////ADDING/CHECKING GLOBAL TAGS
+/////SEARCH FUNCTIONS
 
-/////ADDING TO IDEA LIST
+function search(e){
+  var value = $(e.target).val().toLowerCase();
+  $('.new-idea').filter(function() {
+    $(this).toggle($(this).text().toLowerCase().indexOf(value) !== -1)
+  });
+};
+
+function searchByTag(e) {
+  if ($(e.target).hasClass('global-tag')){
+    $('.new-idea').filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf($(e.target).text()) !== -1)
+    });
+  }
+  if ($(e.target).hasClass('show-all')) {
+    $('.new-idea').filter(function() {
+    $(this).toggle(true) 
+    })
+  }
+}
+
+/////DISABLE SAVE FUNCTION
+
+function disableSaveButton() {
+	$('.save-button').prop('disabled', $('.title-input').val() === '' || $('.body-input').val() === '' ||  $('.tags-input').val() === '')
+};
+
+////LOADING CONTENT ON PAGE LOAD
+window.onload = function() {
+  if (localStorage.key('ideas') === null && localStorage.key('globalTags') === null) {
+    localStorage.setItem("globalTags", "[]");
+    localStorage.setItem("ideas", "[]");
+  }
+  var storedIdeas = JSON.parse(localStorage.getItem('ideas'));
+  for (var i = 0; i < storedIdeas.length; i++) {
+    Object.setPrototypeOf(storedIdeas[i], IdeaBox.prototype);
+    storedIdeas[i].AddToPage();
+  }
+  var currentGlobalTags = JSON.parse(localStorage.getItem('globalTags'));
+  for(var i = 0; i < currentGlobalTags.length; i++){
+      var globalTag = `<h3 class="global-tag">${currentGlobalTags[i]}</h3>`
+      $(globalTag).appendTo($('.global-tags-container'))
+    }
+}
 
 ///HOVER FUNCTIONS 
 
 function hover(x) {
-  console.log(x.src);
   if (x.src === "file:///Users/jakelauer/Documents/mod-one-projects/idea-box/images/delete.svg") x.src = "images/delete-hover.svg";
   if (x.src === "file:///Users/jakelauer/Documents/mod-one-projects/idea-box/images/upvote.svg") x.src = "images/upvote-hover.svg";
   if (x.src === "file:///Users/jakelauer/Documents/mod-one-projects/idea-box/images/downvote.svg") x.src = "images/downvote-hover.svg";
