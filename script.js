@@ -165,6 +165,19 @@ function searchByTag(e) {
   }
 }
 
+//////SORT FUNCTION 
+
+// var ideaOrder = $('.new-idea');
+// var ideaOrderSorted = ideaOrder.sort(function(a, b){
+//   var aRating = $(a).find('.quality-value').text();
+//   var bRating = $(b).find('.quality-value').text();
+//   if(aRating === "swill" && (bRating === "plausible" || bRating === "genius")) return 1;
+//   if(aRating === "genius" && (bRating === "swill" || bRating === "plausible")) return  -1;
+//   if(aRating === "plausible" && bRating === "genius") return 1;
+//   if(aRating === "plausible" && bRating === "swill") return -1;
+//   return 0;
+// })
+
 /////DISABLE SAVE FUNCTION
 
 function disableSaveButton() {
