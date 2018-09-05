@@ -195,3 +195,18 @@ function unhover(x) {
   if (x.src === "file:///Users/jakelauer/Documents/mod-one-projects/idea-box/images/upvote-hover.svg") x.src = "images/upvote.svg";
   if (x.src === "file:///Users/jakelauer/Documents/mod-one-projects/idea-box/images/downvote-hover.svg") x.src = "images/downvote.svg";
 }
+
+////ADDING BORDER TO SORT CONTAINER
+
+$(document).ready(function() {
+	var sortContainer = $(".sort-container");
+	var pos = sortContainer.position();					   
+	$(window).scroll(function() {
+		var windowpos = $(window).scrollTop();
+		if (windowpos >= pos.top) {
+			sortContainer.addClass("sort-container-border");
+		} else {
+			sortContainer.removeClass("sort-container-border");	
+		}
+	});
+});

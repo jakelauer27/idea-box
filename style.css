@@ -2,8 +2,8 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-
 /* Header styling */
+
 header {
   background-color: #E5F3F2;
   padding-top: 30px;
@@ -62,21 +62,12 @@ input[type="text"] {
   background-color: #045E55;
 }
 
-.save-button:disabled {
-  opacity: .7;
-}
-
-.save-button:disabled:hover {
-  background-color: #00A79D;
-
-}
-
 ::placeholder {
   color: #cac8c8;
   font-size: 18px;
 }
 
-/* Main styling */
+/* Ideas Area styling */
 
 .search-input {
   width: 100%;
@@ -84,7 +75,7 @@ input[type="text"] {
 
 .search-container {
   width: 60%;
-  margin: 17px auto;
+  margin: 17px auto 8px auto;
   max-width: 500px;
   display: flex;
 }
@@ -157,28 +148,30 @@ h3 {
 }
 
 .tags-title {
-  margin-top: 3px;
+  margin-top: 7px;
 }
 
 .global-tags-container {
   width: 60%;
-  margin: 10px auto 30px auto;
+  margin: 0px auto 30px auto;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
   max-width: 500px;
+  padding-top: 10px;
   position: relative;
 }
 
 .show-all {
   background: #00A79D;
+  bottom: -25px; 
+  cursor: pointer;
   color: white;
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
   padding: 3px 6px;
   position: absolute;
-  bottom: -25px; 
-  cursor: pointer;
+
 }
 
 .show-all:hover {
@@ -191,10 +184,10 @@ h3 {
   border: 1px solid #00A79D;
   border-radius: 3px;
   color: #939598;
+  cursor: pointer;
   font-family: 'Open Sans', sans-serif;
   padding: 5px;
   margin: 3px 3px;
-  cursor: pointer;
 }
 
 .global-tag:hover {
@@ -207,10 +200,17 @@ h3 {
 
 .sort-container {
   position: sticky;
-  top: 5px;
+  top: 0px;
   background-color: white;
+  border-bottom: 2px solid white;
   z-index: 3;
 }
+
+.sort-container-border {
+  border-bottom-color: #00A79D;
+}
+
+/*MOBILE SIZING*/
 
 @media only screen and (max-width: 700px) {
     header {
