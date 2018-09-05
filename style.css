@@ -203,6 +203,15 @@ h3 {
   color: white;
 }
 
+/*STICKY HEADER*/
+
+.sort-container {
+  position: sticky;
+  top: 5px;
+  background-color: white;
+  z-index: 3;
+}
+
 @media only screen and (max-width: 700px) {
     header {
       padding-top: 10px;
