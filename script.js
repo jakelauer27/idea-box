@@ -5,23 +5,17 @@ $('.body-input').on("keyup", disableSaveButton);
 $('.title-input').on("keyup", disableSaveButton);
 $('.tags-input').on("keyup", disableSaveButton);
 $('main').on("click", ideaButtonDelegator);
-$('main').on("focusout", updateIdea);
-$(document).on("keypress", updateIdeaOnEnter);
+$('main').on("focusout", updateIdeaText);
+$(document).on("keypress", updateIdeaTextOnEnter);
 $('.search-input').on("keyup", search);
 $('.global-tags-container').on("click", searchByTag);
 
 ////EVENT DELAGATION & FUNCTIONS
 
 function ideaButtonDelegator(e) {
-  if ($(e.target).hasClass('x-icon')) {
-    deleteIdea(e);
-  } 
-  if ($(e.target).hasClass('up-arrow-icon')) {
-    changeQuality(e, 1);
-  }
-  if ($(e.target).hasClass('down-arrow-icon')) {
-    changeQuality(e, -1);
-  }
+  if ($(e.target).hasClass('x-icon')) deleteIdea(e);
+  if ($(e.target).hasClass('up-arrow-icon')) changeQuality(e, 1);
+  if ($(e.target).hasClass('down-arrow-icon')) changeQuality(e, -1);
 }
 
 function deleteIdea(e) {
@@ -55,14 +49,14 @@ function changeQuality(e, change) {
 
 ////UPDATE IDEAS WHEN BODY OR TITLE IS CHANGED
 
-function updateIdeaOnEnter(e) {
+function updateIdeaTextOnEnter(e) {
   if(e.which == 13) {
     $('p, h2').blur();
-		updateIdea(e);
+		updateIdeaText(e);
   }
 }
 
-function updateIdea(e) {
+function updateIdeaText(e) {
   	var idea = JSON.parse(localStorage.getItem($(e.target).parents('.new-idea').attr('id')));
 	if ($(e.target).hasClass('idea-title')) {
   	idea.title = $(e.target).text();
@@ -155,7 +149,7 @@ function search(e){
 function searchByTag(e) {
   if ($(e.target).hasClass('global-tag')){
     $('.new-idea').each(function(i, element) {
-      $(element).toggle($(element).text().toLowerCase().indexOf($(e.target).text()) !== -1)
+      $(element).toggle($(element).find('.tag').text().toLowerCase().indexOf($(e.target).text()) !== -1)
     });
   }
   if ($(e.target).hasClass('show-all')) {
